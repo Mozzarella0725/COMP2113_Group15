@@ -1,10 +1,10 @@
 # COMP2113_Group15
 #### Identification of the team members.
 
-| Name       | UID        |
-| ---------- | ---------- |
-| Zhao Kexin | 3035845368 |
-|            |            |
+| Name        | UID        |
+| ----------- | ---------- |
+| Zhao Kexin  | 3035845368 |
+| Tsang KaYin | 3036001842 | (zjr)
 
 #### A description of your application.
 
