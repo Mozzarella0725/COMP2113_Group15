@@ -1,7 +1,4 @@
 # COMP2113_Group15
-
-### Create a README.MD file in the repo that contains
-
 #### Identification of the team members.
 
 | Name       | UID        |
