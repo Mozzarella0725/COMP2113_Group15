@@ -31,20 +31,24 @@
 5. 主流程和整合 - zyg
    1. cheat code: 透视
 
-###唬牌具体玩法:
-基本规则
-‌1. 人数和牌数‌：唬牌可以三个人或四个人玩，牌数不限，一副、两副或多副牌都可以，大小王可以当做任意一张牌‌12。
-‌2. 出牌顺序‌：第一个人先出牌，牌背面朝上放在桌子上，并说出自己出的牌数（叫牌）‌34。
-出牌方式
-‌1. 跟牌‌：后面的玩家可以选择跟牌，即出同样数量的牌，并说出相同的牌数‌34。
-‌2. 翻牌‌：后面的玩家可以选择翻牌，如果出牌人出的牌是真的（例如出的一张6喊的一张6），则翻牌人把牌全部拿走，然后出牌人继续出牌；如果是假的（例如出的一张6喊的一张8），则出牌人把牌全部拿走，由翻牌人开始出牌‌12。
-‌3. 过牌‌：玩家可以选择过牌，即不出牌，由下一个人继续出牌‌12。
-胜负判定
-‌1. 胜利条件‌：第一个出完所有牌的玩家获胜‌12。
-‌特殊规则‌：大小王可以抵任意一张牌，主要操作有叫牌、跟牌、翻牌和过牌‌34。
-示例
-例如：A先出三张喊3个2，如果B认为可能是假的则可以翻牌，如果A出的不是3个2，则A把牌全部拿回去，然后B出牌；如果3个2是真的，则B把牌拿回去，A再出牌，后面依次同前‌12。
-常见问题解答
-‌1. 大小王的作用‌：大小王可以当做任意一张牌使用‌12。
-‌2. 翻牌的规则‌：翻牌优先，如果出牌人出的牌是真的，则翻牌人把所有牌拿走；如果是假的，则出牌人把所有牌拿走‌12。
-‌3. 过牌的处理‌：如果都选择过牌，则把牌放到一旁由出牌人继续出牌‌12。
+### Liar's Deck Operation Instructions:
+
+#### Basic Setup of Liar's Deck:
+
+- The deck consists of 20 cards: 6 Aces, 6 Kings, 6 Queens, and 2 Jokers
+- Jokers can substitute for any card
+- 2-4 players participate, each starting with 5 cards
+- Each player holds a revolver with 1 bullet randomly loaded in one of the 6 chambers
+- Each player has a maximum of 30 seconds for thinking and decision-making
+
+#### Game Process of Liar's Deck:
+
+1. At the beginning of each round, the system designates the "liar's card" type for this round (e.g., "Ace").Liars Card
+2. Players take turns playing cards, 1-3 cards each time. For example, throw out 2 cards means the player claims to have played 2 "Aces".Throw Cards
+3. The next player can choose to:
+- Believe the previous player's statement and play their own cards
+- Challenge the previous player's play (Call Liar!), indicating "I don't believe you just played 2 'Aces'". Then the system reveals the pile to verify.
+   - If the previous player didn't play 2 cards (e.g., 0 "Aces"), the challenge is successful, and the previous player undergoes a death roulette judgment;
+   - If the previous player indeed played 2 "Aces" (including Jokers), the challenge fails, and the challenging player undergoes a death roulette judgment;Gun
+4. Death roulette judgment means firing the gun at oneself. If it's an empty chamber, the game proceeds to the next round; if successful, the player is eliminated, and the game continues to the next round
+5. The game continues until only one player remains, who becomes the winner.
