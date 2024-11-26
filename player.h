@@ -11,6 +11,7 @@ struct Player {
     struct Card played_cards[MAX_CARDS]; // Cards played during the turn
     int num_played_cards;          // Number of cards played during the turn
     bool is_eliminated;            // Flag to indicate if the player is eliminated
+    int death_chamber;             // Chamber number in the death roulette
 };
 
 #endif
