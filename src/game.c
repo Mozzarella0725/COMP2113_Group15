@@ -1,91 +1,66 @@
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include "game.h"
 #include "card.h"
 
-// Load texture from file
-SDL_Texture* load_texture(SDL_Renderer* renderer, const char* filepath) {
-    SDL_Surface* surface = IMG_Load(filepath);
-    if (!surface) {
-        printf("Unable to load image: %s\n", IMG_GetError());
-        return NULL;
+// Start the game: initialize deck and players
+void start_game() {
+    Deck deck;
+    generate_deck(&deck);   // Generate the deck
+    shuffle_deck(&deck);    // Shuffle the deck
+
+    // Initialize players
+    Player player1 = {{}, 5, 0, 1, 1};  // Player 1 with 5 cards and 1 bullet
+    deal_cards(&deck, player1.hand, 5);  // Deal 5 cards to player 1
+    print_deck(&deck);   // Print the deck for debugging
+
+    // Handle the player's turn
+    handle_turn(&player1, &deck);
+}
+
+// Handle a player's turn: play cards, choose to challenge, etc.
+void handle_turn(Player* player, Deck* deck) {
+    printf("Player %d's turn\n", player->id);
+    printf("Hand: ");
+    for (int i = 0; i < player->hand_count; i++) {
+        printf("%d%c ", player->hand[i].value, player->hand[i].suit);
+    }
+    printf("\n");
+
+    // Ask the player to select how many cards to play (1-3 cards)
+    printf("How many cards do you want to play? ");
+    int num_cards;
+    scanf("%d", &num_cards);
+
+    // Check if the player has enough cards to play
+    if (num_cards <= player->hand_count) {
+        printf("You chose to play %d cards.\n", num_cards);
+        player->hand_count -= num_cards;  // Decrease the player's hand count
+    } else {
+        printf("Not enough cards to play!\n");
     }
 
-    SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
-    SDL_FreeSurface(surface);
-    return texture;
-}
-
-// Draw card on screen
-void draw_card(SDL_Renderer* renderer, SDL_Texture* texture, int x, int y) {
-    SDL_Rect cardRect = { x, y, 100, 150 };  // Card dimensions
-    SDL_RenderCopy(renderer, texture, NULL, &cardRect);  // Render the texture
-    SDL_RenderPresent(renderer);  // Update the window
-}
-
-// Animate card dealing: move cards from deck to player
-void animate_card_dealing(SDL_Renderer* renderer, SDL_Texture* card_back, SDL_Texture* card_front, int start_x, int start_y, int end_x, int end_y) {
-    int x = start_x, y = start_y;
+    // Ask if the player wants to challenge the previous player's statement
+    char challenge;
+    printf("Do you want to challenge the previous player's statement? (y/n): ");
+    scanf(" %c", &challenge);
     
-    while (x != end_x || y != end_y) {
-        SDL_RenderClear(renderer);  // Clear the screen
-        
-        // Draw the card back (simulate card facing down)
-        draw_card(renderer, card_back, x, y);
-        
-        // Move the card position (simple linear animation)
-        if (x < end_x) x += 10;  // Move x right
-        if (y < end_y) y += 10;  // Move y down
-        
-        SDL_Delay(20);  // Delay for animation effect
+    if (challenge == 'y' || challenge == 'Y') {
+        handle_challenge(player, NULL);  // Currently, NULL is used for the previous player
     }
-    
-    // After the card reaches the player, flip it to the front
-    draw_card(renderer, card_front, end_x, end_y);
-    SDL_Delay(500);  // Show the front for a moment
 }
 
-// Main game logic to handle animation
-void start_game(SDL_Renderer* renderer, SDL_Texture* card_back, SDL_Texture* card_front) {
-    // Example of dealing cards to players with animation
-    animate_card_dealing(renderer, card_back, card_front, 100, 100, 300, 100);  // Move card from (100,100) to (300,100)
-    animate_card_dealing(renderer, card_back, card_front, 100, 100, 300, 200);  // Another card
-}
+// Handle the challenge: verify if the previous player was lying
+void handle_challenge(Player* challenger, Player* previous_player) {
+    // Here you can add logic for verifying the played cards
+    printf("Challenge in progress...\n");
 
-// Initialize SDL and start the game with 2D animation
-void run_animation() {
-    SDL_Window* window = NULL;
-    SDL_Renderer* renderer = NULL;
-    
-    // Initialize SDL and create window and renderer
-    if (SDL_Init(SDL_INIT_VIDEO) != 0 || IMG_Init(IMG_INIT_PNG) != IMG_INIT_PNG) {
-        printf("SDL Initialization failed: %s\n", SDL_GetError());
-        return;
+    // For now, assume the challenge fails, and we proceed to the death roulette
+    printf("Challenge failed. Proceeding to death roulette!\n");
+    int result = rand() % 6;  // Randomly simulate the death roulette
+    if (result == 0) {
+        printf("You are eliminated!\n");
+    } else {
+        printf("Lucky! You escaped!\n");
     }
-    
-    window = SDL_CreateWindow("Liar's Deck Game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_SHOWN);
-    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-    
-    // Load card images
-    SDL_Texture* card_back = load_texture(renderer, "assets/card_back.png");
-    SDL_Texture* card_front = load_texture(renderer, "assets/card_front.png");
-    
-    // Start the game and animate card dealing
-    start_game(renderer, card_back, card_front);
-
-    SDL_Delay(2000);  // Wait before closing
-    
-    // Clean up
-    SDL_DestroyTexture(card_back);
-    SDL_DestroyTexture(card_front);
-    SDL_DestroyRenderer(renderer);
-    SDL_DestroyWindow(window);
-    SDL_Quit();
-    IMG_Quit();
-}
-
-int main() {
-    run_animation();
-    return 0;
 }
