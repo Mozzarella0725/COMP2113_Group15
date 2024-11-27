@@ -3,22 +3,34 @@
 #include <time.h>
 #include "../include/card.h"
 
-// Generate the deck
-void generate_deck(Deck* deck, int num_decks) {
+// Generate the deck (6 Aces, 6 Kings, 6 Queens, 2 Jokers)
+void generate_deck(Deck* deck) {
     char suits[] = {'H', 'S', 'C', 'D'};
     int index = 0;
 
-    for (int d = 0; d < num_decks; d++) {  // Support multiple decks
-        for (int i = 1; i <= 13; i++) {
-            for (int j = 0; j < 4; j++) {
-                deck->deck[index].value = i;
-                deck->deck[index].suit = suits[j];
-                index++;
-            }
-        }
+    // 6 Aces, 6 Kings, 6 Queens, 2 Jokers
+    for (int i = 0; i < 6; i++) {
+        deck->deck[index].value = 1;  // Ace
+        deck->deck[index].suit = suits[i % 4];
+        index++;
+        deck->deck[index].value = 13; // King
+        deck->deck[index].suit = suits[i % 4];
+        index++;
+        deck->deck[index].value = 12; // Queen
+        deck->deck[index].suit = suits[i % 4];
+        index++;
     }
-    deck->size = index; // Calculate the total number of cards
-    deck->top = 0;      // Initialize the top pointer
+
+    // 2 Jokers (can substitute any card)
+    deck->deck[index].value = 0;  // Joker
+    deck->deck[index].suit = 'J';
+    index++;
+    deck->deck[index].value = 0;  // Joker
+    deck->deck[index].suit = 'J';
+    index++;
+
+    deck->size = index;
+    deck->top = 0;
 }
 
 // Shuffle the deck
@@ -43,7 +55,7 @@ void deal_cards(Deck* deck, Card* hand, int num_cards) {
     }
 }
 
-// Print the deck (for debugging)
+// Print the deck (for debugging purposes)
 void print_deck(Deck* deck) {
     for (int i = 0; i < deck->size; i++) {
         printf("%d%c ", deck->deck[i].value, deck->deck[i].suit);
