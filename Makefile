@@ -1,16 +1,16 @@
 CC = gcc
-CFLAGS = -Wall -g
-SRC = src/card.c src/game.c tests/test_card.c tests/test_game.c  # Includes both card management and game logic test files
+CFLAGS = -Wall -g `sdl2-config --cflags`
+LIBS = `sdl2-config --libs` -lSDL2_image  # Link SDL2_image for image loading
+
+SRC = src/card.c src/game.c tests/test_card.c tests/test_game.c
 INC = -Iinclude
 EXEC = test_game
 
 # Default target to compile the project
 all: $(EXEC)
 
-# Link all the source files into the final executable
 $(EXEC): $(SRC)
-	$(CC) $(CFLAGS) $(SRC) $(INC) -o $(EXEC)
+	$(CC) $(CFLAGS) $(SRC) $(INC) -o $(EXEC) $(LIBS)
 
-# Clean up generated files (e.g., the executable)
 clean:
 	rm -f $(EXEC)
