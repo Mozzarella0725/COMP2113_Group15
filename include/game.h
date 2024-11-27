@@ -13,9 +13,8 @@ typedef struct {
 } Player;
 
 // Main game logic function declarations
-void start_game(SDL_Renderer* renderer, SDL_Texture* card_back, SDL_Texture* card_front);
+void start_game();
 void handle_turn(Player* player, Deck* deck);
 void handle_challenge(Player* challenger, Player* previous_player);
-
 
 #endif
