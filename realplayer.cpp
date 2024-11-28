@@ -1,138 +1,111 @@
-#include "realplayer.h"
+#include "game.h"
+#include "rule.h"
 #include <iostream>
 #include <string>
+#include <algorithm>
 using namespace std;
 
-void display_player_hand(Card * player_hand, int player_hand_count) {
-  if (player_hand_count == 0) {
-    cout << "You have no card in your hand." << endl;
-  }else {
-    for (int i = 0; i < player_hand_count; ++i) {
-      if (player_hand[i].value == 1) {
-        cout << "Card" << i + 1 << ":" << "\n" << "「Ace」" << endl;
-        cout << endl;
-      }else if (player_hand[i].value == 2) {
-        cout << "Card" << i + 1 << ":" << "\n" << "「King」" << endl;
-        cout << endl;
-      }else if (player_hand[i].value == 3) {
-        cout << "Card" << i + 1 << ":" << "\n" << "「Queen」" << endl;
-        cout << endl;
-      }else if (player_hand[i].value == 0) {
-          cout << "Card" << i + 1 << ":" << "\n" << "「Joker」" << endl;
-          cout << endl;
-      }
-    }
-  }
-}
+extern int challenger_id;    
+extern int current_player_id;
 
-void handle_player_input(Card * player_hand, int &player_hand_count) {
-  string command;
-  cout << "Now it's your turn." << endl; 
-  if (player_hand_count == 0) {
-    cout << "You have no card in your hand. Your turn will be skipped." << endl;
-    return;
-  }else {
-    cout << "You can choose:" << endl;
-    cout << "1. Play cards." << "\n" << "2. Skip this turn." << "\n" << "Quit Game." << "\n" << endl;
-    cout << "Please enter your choice: " << "\n" << "(enter corresponding number: 1, 2, or 'Quit')" << endl;
+void handle_player_input(Player& player, Player& previous_player) {
+    string command;
+    cout << player.name << ", it's your turn!" << endl;
+
+    if (player.hand_count == 0) {
+        cout << "You have no cards in your hand. Your turn will be skipped." << endl;
+        return;
+    }
+
+    // Display player's hand
+    cout << "Your hand:" << endl;
+    for (int i = 0; i < player.hand_count; ++i) {
+        if (player.hand[i].value == 1) {
+              cout << "Card " << i + 1 << ": Ace" << endl;
+        } else if (player.hand[i].value == 2) {
+              cout << "Card " << i + 1 << ": King" << endl;
+        } else if (player.hand[i].value == 3) {
+              cout << "Card " << i + 1 << ": Queen" << endl;
+        } else if (player.hand[i].value == 0) {
+              cout << "Card " << i + 1 << ": Joker" << endl;
+        }
+    }
+
+    // Present options to the player
+    cout << "Options:\n1. Play cards\n2. Challenge the previous player\n3. Quit game" << endl;
+    cout << "Enter your choice (1, 2, or 3): ";
     cin >> command;
 
-    while (command != "1" && command != "2" && command != "quit" && command != "Quit") {
-      cout << "Invalid choice. Please enter 1, 2, or quit: ";
-      cin >> command;
-    }
-
-    if (command == "quit" || command == "Quit") {
-      string check;
-      cout << "Are you sure you want to quit the game?" << endl;
-      cout << "After quitting the game, the records of this game will be cleared." << endl;
-      cout << "Please enter 'Yes' or 'No': ";
-      cin >> check;
-
-      while (check != "Yes" && check != "No" && check != "yes" && check != "no") {
-        cout << "Invalid choice. Please enter 'Yes' or 'No': ";
-        cin >> check;
-      }
-
-      if (check == "Yes" || check == "yes") {
-        cout << "You have chosen to quit this game!" << endl;
-        cout << "Thanks for playing!" << endl;
-        exit(0);
-      } else {
-        cout << "You chose not to quit the game." << endl;
-        cout << "Now it's your turn, you can choose:" << endl;
-        cout << "1. Play cards." << "\n" << "2. Skip this turn." << "\n" << "Quit Game" << endl;
-        cout << "Please enter your choice: " << "\n" << "(enter corresponding number: 1, 2, or 'Quit')" << endl;
+    // Validate menu input
+    while (command != "1" && command != "2" && command != "3") {
+        cout << "Invalid choice. Please enter 1, 2, or 3: ";
         cin >> command;
-        while (command != "1" && command != "2" && command != "quit" && command != "Quit") {
-          cout << "Invalid choice. Please enter 1, 2, or quit: ";
-          cin >> command;
-        }
-      }
     }
+
+    // Handle quitting
+    if (command == "3") {
+        cout << "You chose to quit the game. Exiting..." << endl;
+        exit(0);
+    }
+
+    // Handle challenge
+    if (command == "2") {
+        cout << player.name << " is challenging " << previous_player.name << "!" << endl;
+        challenger_id = player.id;
+        handle_challenge(&player, &previous_player);
+        return;
+    }
+
+    // Handle playing cards
     if (command == "1") {
-      int num;
-      
-      if (player_hand_count >= 3) {
-        cout << "How many cards do you want to play in this round (minimum 1, maximum 3)." << endl;
-        cin >> num;
-        while (num > 3 || num < 1) {
-          cout << "Invalid number. Please enter again." << endl;
-          cin >> num;
+        int num;
+        cout << "How many cards do you want to play? (1 - " << min(player.hand_count, 5) << "): ";
+        while (true) {
+            cin >> num;
+            if (cin.fail() || num < 1 || num > min(player.hand_count, 5)) {
+                cin.clear();
+                cin.ignore(INT_MAX, '\n');
+                cout << "Invalid input. Enter a number between 1 and " << min(player.hand_count, 5) << ": ";
+            } else {
+                break;
+            }
         }
-      }else {
-        cout << "How many cards do you want to play in this round (minimum 1, maximum " << player_hand_count << ")." << endl;
-        cin >> num;
-        while (num > player_hand_count || num < 1) {
-          cout << "Invalid number. Please enter again." << endl;
-          cin >> num;
-        }
-      }
 
-      cout << "which card(s) you want to play? (1 - " << player_hand_count << ")"<< endl;
-      cout << "Press enter after each number." << "(Think carefully! You cannot undo the selection.)" << endl;
-      int selected[3] = {-1, -1, -1};
-      for (int i = 0; i < num; ++i) {
-        int Num;
-        cin >> Num;
-        while (Num < 1 || Num > player_hand_count || find(selected, selected + i, Num) != selected + i) {
-          cout << "Invalid number. Please enter again." << endl;
-          cin >> Num;
-          Num -= 1;
+        // Select cards to play
+        cout << "Select the cards to play (1 - " << player.hand_count << "):" << endl;
+        int selected[5] = {-1, -1, -1, -1, -1}; // Store selected cards' indices
+        for (int i = 0; i < num; ++i) {
+            int card_index;
+            cin >> card_index;
+            while (cin.fail() || card_index < 1 || card_index > player.hand_count ||
+                   find(begin(selected), end(selected), card_index - 1) != end(selected)) {
+                cin.clear();
+                cin.ignore(INT_MAX, '\n');
+                cout << "Invalid card selection. Choose again: ";
+                cin >> card_index;
+            }
+            selected[i] = card_index - 1; // Store the 0-based index
         }
-        selected[i] = Num;
-      }
 
-      cout << "You have chosen these cards to play." << endl;
-      for (int i = 0; i < num; ++i) {
-        while (selected[i] != -1) {
-          if (player_hand[selected[i]].value == 1) {
-            cout << "Card" << i + 1 << ":" << "\n" << "「Ace」" << endl;
-            cout << endl;
-          }else if (player_hand[selected[i]].value == 2) {
-            cout << "Card" << i + 1 << ":" << "\n" << "「King」" << endl;
-            cout << endl;
-          }else if (player_hand[selected[i]].value == 3) {
-            cout << "Card" << i + 1 << ":" << "\n" << "「Queen」" << endl;
-            cout << endl;
-          }else if (player_hand[selected[i]].value == 0) {
-              cout << "Card" << i + 1 << ":" << "\n" << "「Joker」" << endl;
-              cout << endl;
-          }
+        // Store played cards
+        player.num_played_cards = num;
+        for (int i = 0; i < num; ++i) {
+            player.played_cards[i] = player.hand[selected[i]];
         }
-      }
 
-      for (int i = num - 1; i >= 0; --i) {
-        int idx = selected[i];
-        for (int j = idx; j < player_hand_count - 1; ++j) {
-            player_hand[j] = player_hand[j + 1];
+        // Remove played cards from hand
+        for (int i = num - 1; i >= 0; --i) {
+            int idx = selected[i];
+            for (int j = idx; j < player.hand_count - 1; ++j) {
+                player.hand[j] = player.hand[j + 1];
+            }
+            player.hand_count--;
         }
-        player_hand_count--;
-      }
-      cout << "You played the selected cards." << endl;
-          
-    }else if (command == "2") {
-      cout << "You have skipped your turn." << endl;
+
+        cout << "You played " << num << " card(s): ";
+        for (int i = 0; i < num; ++i) {
+            cout << player.played_cards[i].value << " "; // Customize display based on card value
+        }
+        cout << endl;
     }
-  }
 }
