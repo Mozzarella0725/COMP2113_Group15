@@ -115,4 +115,3 @@ void handle_player_input(Player& player, Player& previous_player) {
         }
         cout << endl;
     }
-}
