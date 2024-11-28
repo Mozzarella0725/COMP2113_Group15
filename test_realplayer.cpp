@@ -4,6 +4,7 @@
 using namespace std;
 
 int main() {
+  display_player_hand();
   string command;
   cout << "Now it's your turn, you can choose:" << endl;
   cout << "1. Play cards." << "\n" << "2. Skip this turn." << "\n" << "Quit Game." << "\n" << endl;
@@ -29,7 +30,6 @@ int main() {
     }
   }
   if (command == "1") {
-    display_player_hand();
     handle_player_input();
   }else if (command == "2") {
     cout << "You have skipped your turn." << endl;
