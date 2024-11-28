@@ -96,7 +96,7 @@ void handle_player_input(Card * player_hand, int &player_hand_count) {
       for (int i = 0; i < num; ++i) {
         int Num;
         cin >> Num;
-        while (Num < 1 || Num > player_hand_count || find(begin(selected), end(selected), card_index) != end(selected)) {
+        while (Num < 1 || Num > player_hand_count || find(begin(selected), end(selected), Num) != end(selected)) {
           cout << "Invalid number. Please enter again." << endl;
           cin << Num;
         }
