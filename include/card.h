@@ -1,6 +1,8 @@
 #ifndef CARD_H
 #define CARD_H
 
+#include <stdbool.h> // For 'bool' type
+
 // Card structure: represents a card, including its value and suit
 struct Card {
     int value;      // Value of the card: 1 for Ace, 2 for King, 3 for Queen, 0 for Joker
