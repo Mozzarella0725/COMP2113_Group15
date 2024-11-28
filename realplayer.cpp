@@ -12,6 +12,7 @@ void display_player_hand(Card * player_hand, int player_hand_count) {
         cout << "Card" << i + 1 << ":" << "\n" << "「" << Joker << "\n" << "\n" << "\n" << "\n" << "        " << Joker << "」" << endl;
         cout << endl;
       }else {
+        if (player_hand[i] == 1
         cout << "Card" << i + 1 << ":" << "\n" << "「" << player_hand[i].value << "\n" << "\n" << "\n" << "\n" << "        " << player_hand[i].value << "」" << endl;
         cout << endl;
       }
