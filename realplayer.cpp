@@ -2,7 +2,6 @@
 #include <iostream>
 using namespace std;
 
+void display_player_hand() {
 
-
-
-void display_player_input(
+void handle_player_input() {
