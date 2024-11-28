@@ -2,8 +2,8 @@
 #define RULE_H
 
 #include <stdbool.h> // For 'bool' type
-#include "player.h"  // Include Player structure
-#include "card.h"    // Include Card structure
+#include "/include/game.h"  // Include Player structure
+#include "/include/card.h"    // Include Card structure
 
 /**
  * Checks if the cards played by the player match their declaration.
