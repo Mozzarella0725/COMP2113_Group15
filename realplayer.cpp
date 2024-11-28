@@ -127,7 +127,7 @@ void handle_player_input(Card * player_hand, int &player_hand_count) {
         for (int j = idx; j < player_hand_count - 1; ++j) {
             player_hand[j] = player_hand[j + 1];
         }
-      player_hand_count--;
+        player_hand_count--;
       }
       cout << "You played the selected cards." << endl;
           
