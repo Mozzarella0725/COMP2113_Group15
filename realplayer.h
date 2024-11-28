@@ -1,7 +1,11 @@
-#ifndef PLAYER_H
-#define PLAYER_H
+#ifndef REALPLAYER_H
+#define REALPLAYER_H
 
-void handle_player_input()
-void display_player_hand()
+#include <iostream>
+using namespace std;
+
+
+void display_player_hand() const；
+void handle_player_input()；
 
 #endif
