@@ -9,7 +9,6 @@ typedef struct {
     Card played_cards[5];// Cards played during the turn
     int num_played_cards;// Number of cards played duiring the turn
     int hand_count;    // Number of cards in the player's hand
-    int score;         // Player's score
     int id;            // Unique ID for the player
     int death_chamber;       // Remaining bullets (1 bullet per player)
     bool is_eliminated;// Flag to indicate if the player is eliminated
