@@ -1,13 +1,24 @@
 #include "realplayer.h"
 #include <iostream>
+#include <string>
 using namespace std;
 
-void display_player_hand(Card * player_hand, int &player_hand_count) {
+void display_player_hand(Card * player_hand, int player_hand_count) {
   if (player_hand_count == 0) {
     cout << "You have no card in your hand." << endl;
   }else {
-    cout <<
+    for (int i = 0; i < player_hand_count; ++i) {
+      if (player_hand[i].is_joker) {
+        cout << "Card" << i + 1 << ":" << "\n" << "「" << Joker << "\n" << "\n" << "\n" << "\n" << "        " << Joker << "」" << endl;
+        cout << endl;
+      }else {
+        cout << "Card" << i + 1 << ":" << "\n" << "「" << player_hand[i].value << "\n" << "\n" << "\n" << "\n" << "        " << player_hand[i].value << "」" << endl;
+        cout << endl;
+      }
+    }
+  }
 }
+
 void handle_player_input(Card * player_hand, int &player_hand_count) {
   string command;
   cout << "Now it's your turn." << endl; 
