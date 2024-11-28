@@ -2,7 +2,7 @@
 #define REALPLAYER_H
 
 #include <iostream>
-using namespace std;
+#include <string>
 
 void display_player_hand() const；
 void handle_player_input()；
