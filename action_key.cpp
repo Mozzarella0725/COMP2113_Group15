@@ -10,7 +10,7 @@ void display_player_hand() {
 bool quit_game() {
   string check;
   cout << "Are you sure you want to quit the game?" << endl;
-  cout << "After quitting the game, the records of this game will be cleared and the next game will be a new one." << endl;
+  cout << "After quitting the game, the records of this game will be cleared." << endl;
   cout << "Please enter 'Yes' or 'No': ";
   cin >> check;
 
@@ -20,7 +20,7 @@ bool quit_game() {
   }
 
   if (check == "Yes" || check == "yes") {
-    cout << "You have choose to quit this game!" << endl;
+    cout << "You have chosen to quit this game!" << endl;
     cout << "Thanks for playing!" << endl;
     return true;
   } else {
