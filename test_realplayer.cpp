@@ -4,36 +4,14 @@
 using namespace std;
 
 int main() {
-  display_player_hand();
-  string command;
-  cout << "Now it's your turn, you can choose:" << endl;
-  cout << "1. Play cards." << "\n" << "2. Skip this turn." << "\n" << "Quit Game." << "\n" << endl;
-  cout << "Please enter your choice: " << "\n" << "(enter corresponding number: 1, 2, or 'Quit')" << endl;
-  cin >> command;
-
-  while (command != "1" && command != "2" && command != "quit" && command != "Quit") {
-    cout << "Invalid choice. Please enter 1, 2, or quit: ";
-    cin >> command;
-  }
-
-  if (command == "quit" || command == "Quit") {
-    if (quit_game()) {
-      return 0;
-    }else {
-      cout << "Now it's your turn, you can choose:" << endl;
-      cout << "1. Play cards." << "\n" << "2. Skip this turn." << "\n" << "Quit Game" << endl;
-      cout << "Please enter your choice: " << "\n" << "(enter corresponding number: 1, 2, or 'Quit')" << endl;
-      cin >> command;
-      while (command != "1" && command != "2" && command != "quit" && command != "Quit") {
-        cout << "Invalid choice. Please enter 1, 2, or quit: ";
-        cin >> command;
+  while (true) {
+    if (player_hand_count == 0) {
+      cout << "You have no cards left in your hand. Your turn will be skipped" << endl;
+      cout << "Skipping your turn..." << endl;
+      break;
     }
+    display_player_hand(player_hand, player_hand_count)
+    handle_player_input(player_hand, player_hand_count)
   }
-  if (command == "1") {
-    handle_player_input();
-  }else if (command == "2") {
-    cout << "You have skipped your turn." << endl;
-  }
-
   return 0;
 }
