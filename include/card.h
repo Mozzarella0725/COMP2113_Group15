@@ -2,10 +2,10 @@
 #define CARD_H
 
 // Card structure: represents a card, including its value and suit
-typedef struct {
-    int value;      // Card value (1-13, corresponding to Aces, Kings, Queens)
-    char suit;      // Card suit (H: Hearts, S: Spades, C: Clubs, D: Diamonds)
-} Card;
+struct Card {
+    int value;      // Value of the card: 1 for Ace, 2 for King, 3 for Queen, 0 for Joker
+    bool is_joker;  // Flag to indicate if the card is a Joker
+};
 
 // Deck structure: represents the entire deck of cards
 typedef struct {
