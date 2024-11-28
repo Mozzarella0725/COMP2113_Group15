@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <string>
+#include "card.h"
 
 void display_player_hand() const；
 void handle_player_input()；
