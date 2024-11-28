@@ -44,8 +44,14 @@ void handle_player_input(Player& player, Player& previous_player) {
 
     // Handle quitting
     if (command == "3") {
-        cout << "You chose to quit the game. Exiting..." << endl;
-        exit(0);
+        cout << "Are you sure you want to quit the game? (Enter 'yes' to quit): ";
+        string confirm;
+        cin >> confirm;
+        if (confirm == "Yes" || confirm == "yes") {
+            cout << "You have chosen to quit. Thanks for playing!" << endl;
+            exit(0);
+        }
+        return;
     }
 
     // Handle challenge
@@ -104,14 +110,16 @@ void handle_player_input(Player& player, Player& previous_player) {
 
         cout << "You played " << num << " card(s): ";
         for (int i = 0; i < num; ++i) {
-            if (player.played_card[i].value == 1) {
+            if (player.played_cards[i].value == 1) {
                   cout << "Card " << i + 1 << ": [Ace]" << endl;
-            } else if (player.played_card[i].value == 2) {
+            } else if (player.played_cards[i].value == 2) {
                   cout << "Card " << i + 1 << ": [King]" << endl;
-            } else if (player.played_card[i].value == 3) {
+            } else if (player.played_cards[i].value == 3) {
                   cout << "Card " << i + 1 << ": [Queen]" << endl;
-            } else if (player.played_card[i].value == 0) {
+            } else if (player.played_cards[i].value == 0) {
                   cout << "Card " << i + 1 << ": [Joker]" << endl;
+            }
         }
         cout << endl;
     }
+}
