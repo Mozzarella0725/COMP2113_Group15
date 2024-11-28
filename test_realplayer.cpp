@@ -10,7 +10,7 @@ int main() {
   cin >> command;
   while (command != 3) {
     if (command == 1) {
-      display_player_card();
+      display_player_hand();
     }else {
       handle_player_input();
     }
