@@ -90,7 +90,7 @@ void handle_player_input(Player& player, Player& previous_player) {
                 cout << "Invalid card selection. Choose again: ";
                 cin >> card_index;
             }
-            selected[i] = card_index - 1; // Store the 0-based index
+            selected[i] = card_index - 1;
         }
 
         // Store played cards
