@@ -71,7 +71,6 @@ void handle_player_input(Card * player_hand, int &player_hand_count) {
       }
     }
     if (command == "1") {
-      
       int num;
       
       if (player_hand_count >= 3) {
@@ -96,9 +95,10 @@ void handle_player_input(Card * player_hand, int &player_hand_count) {
       for (int i = 0; i < num; ++i) {
         int Num;
         cin >> Num;
-        while (Num < 1 || Num > player_hand_count || find(begin(selected), end(selected), Num) != end(selected)) {
+        while (Num < 1 || Num > player_hand_count || find(selected, selected + i, Num) != selected + i) {
           cout << "Invalid number. Please enter again." << endl;
-          cin << Num;
+          cin >> Num;
+          Num -= 1;
         }
         selected[i] = Num;
       }
