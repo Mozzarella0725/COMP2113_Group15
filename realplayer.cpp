@@ -21,13 +21,13 @@ void handle_player_input(Player& player, Player& previous_player) {
     cout << "Your hand:" << endl;
     for (int i = 0; i < player.hand_count; ++i) {
         if (player.hand[i].value == 1) {
-              cout << "Card " << i + 1 << ": Ace" << endl;
+              cout << "Card " << i + 1 << ": [Ace]" << endl;
         } else if (player.hand[i].value == 2) {
-              cout << "Card " << i + 1 << ": King" << endl;
+              cout << "Card " << i + 1 << ": [King]" << endl;
         } else if (player.hand[i].value == 3) {
-              cout << "Card " << i + 1 << ": Queen" << endl;
+              cout << "Card " << i + 1 << ": [Queen]" << endl;
         } else if (player.hand[i].value == 0) {
-              cout << "Card " << i + 1 << ": Joker" << endl;
+              cout << "Card " << i + 1 << ": [Joker]" << endl;
         }
     }
 
@@ -104,7 +104,14 @@ void handle_player_input(Player& player, Player& previous_player) {
 
         cout << "You played " << num << " card(s): ";
         for (int i = 0; i < num; ++i) {
-            cout << player.played_cards[i].value << " "; // Customize display based on card value
+            if (player.played_card[i].value == 1) {
+                  cout << "Card " << i + 1 << ": [Ace]" << endl;
+            } else if (player.played_card[i].value == 2) {
+                  cout << "Card " << i + 1 << ": [King]" << endl;
+            } else if (player.played_card[i].value == 3) {
+                  cout << "Card " << i + 1 << ": [Queen]" << endl;
+            } else if (player.played_card[i].value == 0) {
+                  cout << "Card " << i + 1 << ": [Joker]" << endl;
         }
         cout << endl;
     }
