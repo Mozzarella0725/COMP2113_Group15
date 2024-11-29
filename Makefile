@@ -1,4 +1,4 @@
-CC = gcc
+CC = g++
 CFLAGS = -Wall -g
 SRC = src/card.c src/game.c tests/test_card.c tests/test_game.c  # Includes both card management and game logic test files
 INC = -Iinclude
