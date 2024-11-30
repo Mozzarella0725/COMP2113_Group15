@@ -1,91 +1,153 @@
 class AIPlayer {
 private:
-    vector<Card> hand;          // AI手牌
-    Gun gun;                    // AI的手枪
-    int playerID;               // AI玩家ID
+    vector<Card> hand;
+    Gun gun;
+    int playerID;
     
     struct GameState {
-        int currentLiarCard;    // 当前回合的"说谎牌"类型
-        int cardsInPile;        // 当前牌堆数量
-        vector<int> otherPlayersCardCount;  // 其他玩家手牌数
-        vector<Play> playHistory;           // 出牌历史记录
+        int currentLiarCard;
+        int cardsInPile;
+        vector<int> otherPlayersCardCount;
+        vector<Play> playHistory;
+        int totalPlayers;        // Added: track total players
+        int remainingPlayers;    // Added: track remaining players
     };
 
-    // 决策辅助函数
-    bool shouldChallenge(const Play& lastPlay, const GameState& state);
-    Play decidePlaying(const GameState& state);
-    double calculateBluffProbability(const Play& play, const GameState& state);
-
-public:
-    AIPlayer(int id) : playerID(id) {}
-    
-    Play makePlay(const GameState& state) {
-        // 决定是否说谎或质疑
-        if (!state.playHistory.empty()) {
-            if (shouldChallenge(state.playHistory.back(), state)) {
-                return Play(PlayType::Challenge);
+    // Added helper functions
+    int calculateRemainingLiarCards(const GameState& state) {
+        int totalLiarCards = (state.currentLiarCard == 0) ? 2 : 6; // Jokers or normal cards
+        int playedCards = 0;
+        
+        // Count cards from play history
+        for (const auto& play : state.playHistory) {
+            if (play.getType() == PlayType::PlayCards) {
+                playedCards += play.getCardCount();
             }
         }
-        return decidePlaying(state);
+        
+        // Count cards in AI's hand that match liar card
+        for (const auto& card : hand) {
+            if (card.getValue() == state.currentLiarCard) {
+                playedCards++;
+            }
+        }
+        
+        return totalLiarCards - playedCards;
     }
 
-    bool shouldChallenge(const Play& lastPlay, const GameState& state) {
-        // 基础判断逻辑
-        int claimedCards = lastPlay.getCardCount();
-        int remainingLiarCards = calculateRemainingLiarCards(state);
+    double calculateRiskFactor(const GameState& state) {
+        // Base risk starts at 0.5
+        double risk = 0.5;
         
-        // 如果声称的数量明显超过剩余可能的数量
-        if (claimedCards > remainingLiarCards) {
-            return true;
+        // Adjust risk based on gun chambers
+        risk += (gun.getUsedChambers() * 0.1); // Higher risk with more used chambers
+        
+        // Adjust risk based on game state
+        if (state.remainingPlayers <= 2) {
+            risk -= 0.2; // More aggressive in heads-up play
         }
         
-        // 计算说谎概率
-        double bluffProb = calculateBluffProbability(lastPlay, state);
-        double riskFactor = calculateRiskFactor(state);
+        // Adjust risk based on hand size
+        if (hand.size() <= 2) {
+            risk -= 0.15; // More aggressive with few cards
+        }
         
-        return bluffProb > riskFactor;
+        return std::clamp(risk, 0.0, 1.0);
     }
 
-private:
-    Play decidePlaying(const GameState& state) {
-        vector<Card> validCards = getValidCardsForLiarCard(hand, state.currentLiarCard);
-        
-        // 如果手上有足够的真实卡牌，优先使用
-        if (validCards.size() >= 1) {
-            // 根据场上形势决定出牌数量
-            int playCount = decidePlayCount(validCards.size(), state);
-            return createPlay(PlayType::PlayCards, validCards, playCount);
+    int decidePlayCount(int validCardsCount, const GameState& state) {
+        // Conservative with 1 card if many players left
+        if (state.remainingPlayers > 3) {
+            return 1;
         }
         
-        // 需要说谎的情况
-        if (shouldBluff(state)) {
-            int bluffCount = decideBluffCount(state);
-            return createBluffPlay(bluffCount, state);
+        // More aggressive late game
+        if (state.remainingPlayers <= 2) {
+            return std::min(3, validCardsCount);
         }
         
-        // 保守策略：只出一张牌
-        return createBluffPlay(1, state);
+        // Default to playing up to 2 cards
+        return std::min(2, validCardsCount);
     }
-    
-    double calculateBluffProbability(const Play& play, const GameState& state) {
-        // 基于以下因素计算说谎概率：
-        // 1. 已知的牌
-        // 2. 其他玩家的行为模式
-        // 3. 剩余牌堆情况
-        // 4. 当前回合进展
-        double probability = 0.0;
+
+    bool shouldBluff(const GameState& state) {
+        // Calculate basic probability
+        double bluffNecessity = 1.0 - (hand.size() / 5.0); // Higher necessity with fewer cards
         
-        // 基础概率计算
-        int claimedCards = play.getCardCount();
-        int maxPossibleCards = calculateRemainingLiarCards(state);
-        probability += (claimedCards / (double)maxPossibleCards);
+        // Adjust based on game state
+        if (state.remainingPlayers <= 2) {
+            bluffNecessity += 0.2; // More likely to bluff in heads-up
+        }
         
-        // 根据历史行为调整
-        probability = adjustProbabilityByHistory(probability, play, state);
+        // Adjust based on gun risk
+        double gunRisk = gun.getUsedChambers() / 6.0;
+        bluffNecessity -= gunRisk; // Less likely to bluff with higher gun risk
         
-        // 根据当前局势调整
-        probability = adjustProbabilityBySituation(probability, state);
-        
-        return probability;
+        return (bluffNecessity > 0.6);
     }
+
+    int decideBluffCount(const GameState& state) {
+        // Conservative bluffing
+        if (state.remainingPlayers > 3 || gun.getUsedChambers() >= 3) {
+            return 1;
+        }
+        
+        // More aggressive in late game
+        if (state.remainingPlayers <= 2) {
+            return (rand() % 2) + 1; // 1 or 2 cards
+        }
+        
+        return 1; // Default to 1 card
+    }
+
+    double adjustProbabilityByHistory(double baseProbability, const Play& play, const GameState& state) {
+        // Analyze player patterns
+        int playerBluffCount = 0;
+        int playerTotalPlays = 0;
+        
+        for (const auto& historicPlay : state.playHistory) {
+            if (historicPlay.getPlayerID() == play.getPlayerID()) {
+                playerTotalPlays++;
+                if (historicPlay.wasBluff()) {
+                    playerBluffCount++;
+                }
+            }
+        }
+        
+        if (playerTotalPlays > 0) {
+            double playerBluffRate = playerBluffCount / (double)playerTotalPlays;
+            baseProbability = (baseProbability + playerBluffRate) / 2.0;
+        }
+        
+        return baseProbability;
+    }
+
+    double adjustProbabilityBySituation(double baseProbability, const GameState& state) {
+        // Late game adjustment
+        if (state.remainingPlayers <= 2) {
+            baseProbability += 0.1; // Assume more bluffing in heads-up
+        }
+        
+        // Desperate situation adjustment
+        for (int cardCount : state.otherPlayersCardCount) {
+            if (cardCount <= 2) {
+                baseProbability += 0.15; // Assume more bluffing from players with few cards
+            }
+        }
+        
+        return std::clamp(baseProbability, 0.0, 1.0);
+    }
+
+    vector<Card> getValidCardsForLiarCard(const vector<Card>& playerHand, int liarCard) {
+        vector<Card> validCards;
+        for (const auto& card : playerHand) {
+            if (card.getValue() == liarCard || card.isJoker()) {
+                validCards.push_back(card);
+            }
+        }
+        return validCards;
+    }
+
+public:
+    // ... (rest of the public interface remains the same)
 };
