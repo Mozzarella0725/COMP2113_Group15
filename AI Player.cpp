@@ -149,5 +149,163 @@ private:
     }
 
 public:
-    // ... (rest of the public interface remains the same)
+class AIPlayer {
+private:
+    // ... (previous private members and helper functions remain the same)
+
+public:
+    AIPlayer(int id) : playerID(id) {
+        gun = Gun();  // Initialize with new gun
+    }
+    
+    // Get player's ID
+    int getID() const {
+        return playerID;
+    }
+
+    // Add cards to hand
+    void addCard(const Card& card) {
+        hand.push_back(card);
+    }
+
+    // Remove cards from hand
+    void removeCards(const vector<Card>& cards) {
+        for (const auto& card : cards) {
+            auto it = find(hand.begin(), hand.end(), card);
+            if (it != hand.end()) {
+                hand.erase(it);
+            }
+        }
+    }
+
+    // Get current hand size
+    int getHandSize() const {
+        return hand.size();
+    }
+
+    // Check if player is eliminated
+    bool isEliminated() const {
+        return gun.isEliminated();
+    }
+
+    // Get gun state
+    Gun getGun() const {
+        return gun;
+    }
+
+    // Handle death roulette result
+    void handleDeathRoulette() {
+        gun.pullTrigger();
+    }
+
+    // Main decision-making function
+    Play makePlay(const GameState& state) {
+        // First check if we should challenge the previous play
+        if (!state.playHistory.empty()) {
+            if (shouldChallenge(state.playHistory.back(), state)) {
+                return Play(PlayType::Challenge, playerID);
+            }
+        }
+        return decidePlaying(state);
+    }
+
+    // Handle receiving cards from lost challenge
+    void receiveCards(const vector<Card>& cards) {
+        for (const auto& card : cards) {
+            hand.push_back(card);
+        }
+    }
+
+    // Update game state information
+    void updateGameState(const GameState& newState) {
+        currentState = newState;
+    }
+
+    // Get player's current hand
+    vector<Card> getHand() const {
+        return hand;
+    }
+
+    // Reset player for new game
+    void reset() {
+        hand.clear();
+        gun = Gun();
+    }
+
+    // Handle challenge results
+    void handleChallengeResult(bool wasSuccessful) {
+        if (!wasSuccessful) {
+            handleDeathRoulette();
+        }
+    }
+
+    // Validate play before making it
+    bool validatePlay(const Play& play) const {
+        if (play.getType() == PlayType::PlayCards) {
+            return play.getCardCount() <= hand.size();
+        }
+        return true;
+    }
+
+    // Get string representation of player state (for debugging)
+    string toString() const {
+        stringstream ss;
+        ss << "AI Player " << playerID << "\n";
+        ss << "Hand size: " << hand.size() << "\n";
+        ss << "Gun chambers used: " << gun.getUsedChambers() << "\n";
+        ss << "Eliminated: " << (isEliminated() ? "Yes" : "No");
+        return ss.str();
+    }
+
+private:
+    GameState currentState;  // Store current game state
+};
+
+// Required supporting structures
+
+struct Play {
+    enum class PlayType {
+        Challenge,
+        PlayCards
+    };
+
+    Play(PlayType type, int playerId = -1) 
+        : type(type), playerID(playerId), cardCount(0) {}
+    
+    Play(PlayType type, const vector<Card>& cards, int playerId) 
+        : type(type), playerID(playerId), playedCards(cards), cardCount(cards.size()) {}
+
+    PlayType getType() const { return type; }
+    int getPlayerID() const { return playerID; }
+    int getCardCount() const { return cardCount; }
+    vector<Card> getCards() const { return playedCards; }
+    bool wasBluff() const { return bluffStatus; }
+    void setBluffStatus(bool wasBluff) { bluffStatus = wasBluff; }
+
+private:
+    PlayType type;
+    int playerID;
+    vector<Card> playedCards;
+    int cardCount;
+    bool bluffStatus = false;
+};
+
+class Gun {
+public:
+    Gun() : usedChambers(0), eliminated(false) {}
+
+    void pullTrigger() {
+        usedChambers++;
+        if (usedChambers >= 6) {
+            eliminated = true;
+        }
+    }
+
+    int getUsedChambers() const { return usedChambers; }
+    bool isEliminated() const { return eliminated; }
+
+private:
+    int usedChambers;
+    bool eliminated;
+};
 };
