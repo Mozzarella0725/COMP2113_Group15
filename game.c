@@ -43,7 +43,7 @@ void handle_turn(Player* player, Deck* deck) {
     }
 
     // Ask the player to select how many cards to play (1-3 cards)
-    printf("How many cards do you want to play? ");
+  /*printf("How many cards do you want to play? ");
     int num_cards;
     scanf("%d", &num_cards);
 
@@ -64,6 +64,7 @@ void handle_turn(Player* player, Deck* deck) {
         handle_challenge(player, NULL);  // Currently, NULL is used for the previous player
     }
 }
+*/
 
 // CHEAT, show cards
 void show_other_players_cards(Player* players, int num_players, int current_player) {
