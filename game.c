@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "game.h"
 #include "card.h"
+#include "rule.h"
 
 // Start the game: initialize deck and players
 void start_game() {
@@ -59,21 +60,6 @@ void handle_turn(Player* player, Deck* deck) {
     
     if (challenge == 'y' || challenge == 'Y') {
         handle_challenge(player, NULL);  // Currently, NULL is used for the previous player
-    }
-}
-
-// Handle the challenge: verify if the previous player was lying
-void handle_challenge(Player* challenger, Player* previous_player) {
-    // Here you can add logic for verifying the played cards
-    printf("Challenge in progress...\n");
-
-    // For now, assume the challenge fails, and we proceed to the death roulette
-    printf("Challenge failed. Proceeding to death roulette!\n");
-    int result = rand() % 6;  // Randomly simulate the death roulette
-    if (result == 0) {
-        printf("You are eliminated!\n");
-    } else {
-        printf("Lucky! You escaped!\n");
     }
 }
 
