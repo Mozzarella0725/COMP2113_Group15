@@ -17,7 +17,7 @@ int current_player_id = -1; // Current player's ID
  * 
  * Return True if the player is honest. Return False if the player is bluffing.
  */
-bool check_bluff(struct Card* played_cards, int num_cards, int called_value) {
+bool check_bluff(Card* played_cards, int num_cards, int called_value) {
     for (int i = 0; i < num_cards; i++) {
         // If a card doesn't match the declared value and isn't a Joker, it's a bluff
         if (played_cards[i].value != called_value && !played_cards[i].is_joker) {
@@ -33,7 +33,7 @@ bool check_bluff(struct Card* played_cards, int num_cards, int called_value) {
  * challenger Pointer to the Player who initiated the challenge.
  * current_player Pointer to the Player whose play is being challenged.
  */
-void handle_challenge(struct Player* challenger, struct Player* current_player) {
+void handle_challenge(Player* challenger, Player* current_player) {
     is_bluff = check_bluff(current_player->played_cards, current_player->num_played_cards, called_value);
 
     if (!is_bluff) {
@@ -52,7 +52,7 @@ void handle_challenge(struct Player* challenger, struct Player* current_player) 
  * 
  * player Pointer to the Player undergoing the death roulette.
  */
-void trigger_death_roulette(struct Player* player) {
+void trigger_death_roulette(Player* player) {
     player->death_chamber++; // Increment death count for this player
 
     int chambers = 6 - player->death_chamber + 1; // Reduce chambers based on death count
