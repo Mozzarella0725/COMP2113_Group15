@@ -9,7 +9,7 @@ main.o: main.cpp game.h card.h realplayer.h rule.h
 	g++ $(FLAGS) -c main.cpp
 
 AI_Player.o: AI\ Player.cpp card.h
-	g++ $(FLAGS) -c "AI Player.cpp" -o AI_Player.o
+	g++ $(FLAGS) -c "AI_Player.cpp" -o AI_Player.o
 
 realplayer.o: realplayer.cpp realplayer.h game.h rule.h card.h
 	g++ $(FLAGS) -c realplayer.cpp
