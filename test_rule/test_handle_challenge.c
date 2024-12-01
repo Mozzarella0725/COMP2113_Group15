@@ -8,7 +8,7 @@ void test_handle_challenge() {
     current_player.played_cards[0] = (Card){2, false}; // Correct card
     current_player.played_cards[1] = (Card){3, false}; // Incorrect card
     
-    called_value = 2; // Declared value
+    int called_value = 2; // Declared value
     handle_challenge(&challenger, &current_player);
     
     printf("Test handle_challenge complete.\n");
