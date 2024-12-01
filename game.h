@@ -2,6 +2,7 @@
 #define GAME_H
 
 #include "card.h"
+#include <stdbool.h> // newly added, for cheat
 
 // Player structure: each player has their hand, score, etc.
 typedef struct {
@@ -19,5 +20,9 @@ typedef struct {
 void start_game();
 void handle_turn(Player* player, Deck* deck);
 void handle_challenge(Player* challenger, Player* previous_player);
+
+//newly added, for cheat
+void show_other_players_cards(Player* players, int num_players, int current_player);
+void process_player_input(Player* player, int num_players, int current_player);
 
 #endif
