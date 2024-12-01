@@ -11,7 +11,6 @@ extern int current_player_id;
 
 void handle_player_input(Player& player, Player& previous_player) {
     string command;
-    cout << player.name << ", it's your turn!" << endl;
 
     if (player.hand_count == 0) {
         cout << "You have no cards in your hand. Your turn will be skipped." << endl;
