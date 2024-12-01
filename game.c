@@ -23,12 +23,13 @@ void start_game() {
 // Handle a player's turn: play cards, choose to challenge, etc.
 void handle_turn(Player* player, Deck* deck) {
     printf("Player %d's turn\n", player->id);
-    printf("Hand: ");
+  /*printf("Hand: ");
     for (int i = 0; i < player->hand_count; i++) {
         printf("%d", player->hand[i].value);
     }
     printf("\n");
-
+    */
+    
     // CHEATcode
     char input[100];
     printf("Enter command (or press Enter to continue): ");
