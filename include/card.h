@@ -4,10 +4,10 @@
 #include <stdbool.h> // For 'bool' type
 
 // Card structure: represents a card, including its value and suit
-struct Card {
+typedef struct {
     int value;      // Value of the card: 1 for Ace, 2 for King, 3 for Queen, 0 for Joker
     bool is_joker;  // Flag to indicate if the card is a Joker
-};
+} Card;
 
 // Deck structure: represents the entire deck of cards
 typedef struct {
