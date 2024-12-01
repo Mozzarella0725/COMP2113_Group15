@@ -5,7 +5,7 @@ INC = -Iinclude
 EXEC = test_game
 
 
-realplayer.o: realplayer.cpp realplayer.h game.h player.h
+realplayer.o: realplayer.cpp realplayer.h game.h rule.h card.h
 	$(CC) $(CFLAGS) -c realplayer.cpp
 
 # Default target to compile the project
