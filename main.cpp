@@ -139,11 +139,6 @@ void run_game() {
             if (!current_player.human->is_eliminated) {
                 handle_turn(current_player.human, &deck);  // From game.h
                 
-                int prev_id = (current_player_id + NUM_PLAYERS - 1) % NUM_PLAYERS;
-                Player* previous_player = players[prev_id].is_ai ? 
-                    nullptr : players[prev_id].human;
-                
-                handle_player_input(*current_player.human, *previous_player);  // From realplayer.cpp
             }
         }
 
