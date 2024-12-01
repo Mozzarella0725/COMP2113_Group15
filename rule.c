@@ -16,6 +16,8 @@ int challenger_id = -1;
 // Current player's ID
 int current_player_id = -1; 
 
+
+
 /**
  * Checks if the cards played by the player match their declaration.
  * 
@@ -60,6 +62,35 @@ void handle_challenge(Player* challenger, Player* current_player) {
     }
 }
 
+// Function to display the ASCII art of a pistol
+void display_pistol() {
+    printf(".-=-\n");
+    printf("   =@@@@%%.                         .:==+*****++++++++++++++-.      .\n");
+    printf(" =%@@@@@@@@@%%%@@@@@@@@@@@@@@@@@@@@@%%%%%@@@@@@@@@@@@@@@@@#*#*==--+=-\n");
+    printf(" +@@@@@@@@@@@@@@@@@@@@%%%%########%+*++==**#%%%%%%@@@@@@@@@#*##+=:\n");
+    printf("  ======++++++=+++#@@@@@@@@@@@@@@@@@%**##@@++++++*#%%*===+%@%**##*+-:.\n");
+    printf("                   -%%%%%%#######%%##++++%#=-------:-----#@####%%@@%#*=\n");
+    printf("                                    -+===*=%%%%%####%%%#%%@##@##%@@%%%%@@%%-\n");
+    printf("                                     +%%%+ ###%%%%@@@@@@@%*++++*#%%##%%@@@@+\n");
+    printf("                                     =%###+%######%%%%%%%#+==+++***###%%@@@%\n");
+    printf("                                     +***+--------------======++****##%%@@@@#.\n");
+    printf("                                     +%%%##*--+*##%%******+====+++***#%@%@@@@%-\n");
+    printf("                                      ....:=*#+:.  --::--=*%+=+######*%@**%@@@@*\n");
+    printf("                                            -+      ::.    -%**-:::=*%%@@*+%@@@@%:\n");
+    printf("                                            :-      ...     ++       -*@@@*+#@@@@@+\n");
+    printf("                                             ::   ..:.      +.        .*@@@++#@@@@@*\n");
+    printf("                                              .--+=-.     :=:          :%@@#=+%@@@@@*\n");
+    printf("                                                 .:-======-             +@@%=-*%@@@@@+\n");
+    printf("                                                                        -@@@*=+###@@@@-\n");
+    printf("                                                                        -%@@%++*%@@@@@%.\n");
+    printf("                                                                        -%@@%+=*%@@@@@@=\n");
+    printf("                                                                        -@@@%+=*%@@@@@@@.\n");
+    printf("                                                                        =@@@@*=*%@@@@@@@*\n");
+    printf("                                                                        =@@@@#+#%@@@@@@@@.\n");
+    printf("                                                                       .:-=+**%@%+======:\n");
+}
+
+
 /**
  * Executes the death roulette for a player.
  * 
@@ -72,7 +103,10 @@ void trigger_death_roulette(Player* player) {
     // Reduce chambers based on death count
     int chambers = 6 - player->death_chamber + 1;           
     // Randomly pick a chamber
-    int chamber = rand() % chambers;           
+    int chamber = rand() % chambers;    
+
+    // Display the pistol ASCII art
+    display_pistol();       
 
     if (chamber == 0) { 
         
