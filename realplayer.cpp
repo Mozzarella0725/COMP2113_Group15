@@ -66,11 +66,11 @@ void handle_player_input(Player& player, Player& previous_player) {
     // Handle playing cards
     if (command == "1") {
         int num;
-        cout << "How many cards do you want to play? (1 - " << min(player.hand_count, 5) << "): ";
+        cout << "How many cards do you want to play? (1 - " << min(player.hand_count, 3) << "): ";
         while (true) {
             cin >> num;
-            if (num < 1 || num > min(player.hand_count, 5)) {
-                cout << "Invalid input. Enter a number between 1 and " << min(player.hand_count, 5) << ": ";
+            if (num < 1 || num > min(player.hand_count, 3)) {
+                cout << "Invalid input. Enter a number between 1 and " << min(player.hand_count, 3) << ": ";
             } else {
                 break;
             }
@@ -78,7 +78,7 @@ void handle_player_input(Player& player, Player& previous_player) {
 
         // Select cards to play
         cout << "Enter number to select the cards to play (1 - " << player.hand_count << "):" << endl;
-        int selected[5] = {-1, -1, -1, -1, -1}; // Store selected cards' indices
+        int selected[3] = {-1, -1, -1};
         for (int i = 0; i < num; ++i) {
             int card_index;
             cin >> card_index;
