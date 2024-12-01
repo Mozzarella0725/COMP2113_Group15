@@ -24,7 +24,7 @@ void handle_turn(Player* player, Deck* deck) {
     printf("Player %d's turn\n", player->id);
     printf("Hand: ");
     for (int i = 0; i < player->hand_count; i++) {
-        printf("%d%c ", player->hand[i].value, player->hand[i].suit);
+        printf("%d%c ", player->hand[i].value);
     }
     printf("\n");
 
