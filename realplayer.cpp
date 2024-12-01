@@ -1,5 +1,6 @@
 #include "game.h"
 #include "rule.h"
+#include "card.h"
 #include <iostream>
 #include <string>
 #include <algorithm>
