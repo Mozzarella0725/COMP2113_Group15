@@ -1,5 +1,5 @@
 CC = g++
-CFLAGS = -Wall -g
+CFLAGS = -pedantic-error -std=c++11
 SRC = src/card.c src/game.c tests/test_card.c tests/test_game.c  # Includes both card management and game logic test files
 INC = -Iinclude
 EXEC = test_game
