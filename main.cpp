@@ -7,7 +7,7 @@
 #include "card.h"      // Card and Deck structures
 #include "realplayer.h" // human player 
 #include "rule.h"      // game rules
-#include "AI Player.cpp"  // AI player 
+#include "AI_Player.cpp"  // AI player 
 
 #define NUM_PLAYERS 4
 #define NUM_HUMAN_PLAYERS 1
