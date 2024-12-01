@@ -27,6 +27,18 @@ void handle_turn(Player* player, Deck* deck) {
     }
     printf("\n");
 
+    // CHEATcode
+    char input[100];
+    printf("Enter command (or press Enter to continue): ");
+    getchar(); // Clear any leftover newline
+    fgets(input, sizeof(input), stdin);
+    input[strcspn(input, "\n")] = 0; // Remove trailing newline
+    
+    // CHEAT code check
+    if (strcmp(input, "hku is brilliant") == 0) {
+        show_other_players_cards(player, 4, player->id - 1); // 4 players total
+    }
+
     // Ask the player to select how many cards to play (1-3 cards)
     printf("How many cards do you want to play? ");
     int num_cards;
@@ -63,4 +75,25 @@ void handle_challenge(Player* challenger, Player* previous_player) {
     } else {
         printf("Lucky! You escaped!\n");
     }
+}
+
+// CHEAT, show cards
+void show_other_players_cards(Player* players, int num_players, int current_player) {
+    printf("\n=== Other Players' Cards ===\n");
+    for (int i = 0; i < num_players; i++) {
+        if (i != current_player && !players[i].is_eliminated) {
+            printf("Player %d's cards: ", players[i].id);
+            for (int j = 0; j < players[i].hand_count; j++) {
+                switch(players[i].hand[j].value) {
+                    case 1: printf("Ace "); break;
+                    case 2: printf("King "); break;
+                    case 3: printf("Queen "); break;
+                    case 0: printf("Joker "); break;
+                    default: printf("%d ", players[i].hand[j].value);
+                }
+            }
+            printf("\n");
+        }
+    }
+    printf("========================\n");
 }
