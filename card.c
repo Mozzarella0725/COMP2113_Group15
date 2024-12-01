@@ -1,32 +1,26 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include "../include/card.h"
+#include "card.h"
 
 // Generate the deck (6 Aces, 6 Kings, 6 Queens, 2 Jokers)
 void generate_deck(Deck* deck) {
-    char suits[] = {'H', 'S', 'C', 'D'};
     int index = 0;
 
     // 6 Aces, 6 Kings, 6 Queens, 2 Jokers
     for (int i = 0; i < 6; i++) {
         deck->deck[index].value = 1;  // Ace
-        deck->deck[index].suit = suits[i % 4];
         index++;
-        deck->deck[index].value = 13; // King
-        deck->deck[index].suit = suits[i % 4];
+        deck->deck[index].value = 2; // King
         index++;
-        deck->deck[index].value = 12; // Queen
-        deck->deck[index].suit = suits[i % 4];
+        deck->deck[index].value = 3; // Queen
         index++;
     }
 
     // 2 Jokers (can substitute any card)
     deck->deck[index].value = 0;  // Joker
-    deck->deck[index].suit = 'J';
     index++;
     deck->deck[index].value = 0;  // Joker
-    deck->deck[index].suit = 'J';
     index++;
 
     deck->size = index;
@@ -58,7 +52,7 @@ void deal_cards(Deck* deck, Card* hand, int num_cards) {
 // Print the deck (for debugging purposes)
 void print_deck(Deck* deck) {
     for (int i = 0; i < deck->size; i++) {
-        printf("%d%c ", deck->deck[i].value, deck->deck[i].suit);
+        printf("%d%c ", deck->deck[i].value);
     }
     printf("\n");
 }
