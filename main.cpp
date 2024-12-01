@@ -135,7 +135,7 @@ void run_game() {
                 }
             }
         } else {
-            /* Human player turn, realplayer.cpp  */
+            handle_player_input();
             if (!current_player.human->is_eliminated) {
                 handle_turn(current_player.human, &deck);  // From game.h
                 
