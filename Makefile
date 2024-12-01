@@ -2,14 +2,14 @@ FLAGS = -pedantic-errors -std=c++11
 
 all: game
 
-game: main.o AIPlayer.o realplayer.o game.o card.o rule.o
-	g++ $(FLAGS) main.o AIPlayer.o realplayer.o game.o card.o rule.o -o game
+game: main.o "AI Player.o" realplayer.o game.o card.o rule.o
+	g++ $(FLAGS) main.o "AI Player.o" realplayer.o game.o card.o rule.o -o game
 
-main.o: main.cpp game.h card.h realplayer.h rule.h AIPlayer.h
+main.o: main.cpp game.h card.h realplayer.h rule.h "AI Player.cpp"
 	g++ $(FLAGS) -c main.cpp
 
-AIPlayer.o: AIPlayer.cpp card.h
-	g++ $(FLAGS) -c AIPlayer.cpp
+"AI Player.o": "AI Player.cpp" card.h
+	g++ $(FLAGS) -c "AI Player.cpp"
 
 realplayer.o: realplayer.cpp realplayer.h game.h rule.h card.h
 	g++ $(FLAGS) -c realplayer.cpp
