@@ -5,7 +5,6 @@
 #include <vector>
 #include "game.h"      // game management 
 #include "card.h"      // Card and Deck structures
-#include "player.h"    // Player structure
 #include "realplayer.h" // human player 
 #include "rule.h"      // game rules
 #include "AI Player.cpp"  // AI player 
