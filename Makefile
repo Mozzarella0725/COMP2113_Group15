@@ -8,7 +8,7 @@ game: main.o AIPlayer.o realplayer.o game.o card.o rule.o
 main.o: main.cpp game.h card.h realplayer.h rule.h AIPlayer.h
 	g++ $(FLAGS) -c main.cpp
 
-AIPlayer.o: AIPlayer.cpp AIPlayer.h card.h
+AIPlayer.o: AIPlayer.cpp card.h
 	g++ $(FLAGS) -c AIPlayer.cpp
 
 realplayer.o: realplayer.cpp realplayer.h game.h rule.h card.h
