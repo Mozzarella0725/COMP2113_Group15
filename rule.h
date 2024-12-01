@@ -14,7 +14,7 @@
  * 
  * Return True if the player is honest. Return False if the player is bluffing.
  */
-bool check_bluff(struct Card* played_cards, int num_cards, int called_value);
+bool check_bluff(Card* played_cards, int num_cards, int called_value);
 
 /**
  * Handles the result of a bluff challenge.
@@ -22,13 +22,13 @@ bool check_bluff(struct Card* played_cards, int num_cards, int called_value);
  * challenger Pointer to the Player who initiated the challenge.
  * current_player Pointer to the Player whose play is being challenged.
  */
-void handle_challenge(struct Player* challenger, struct Player* current_player);
+void handle_challenge(Player* challenger, Player* current_player);
 
 /**
  * Executes the death roulette for a player.
  * 
  * player Pointer to the Player undergoing the death roulette.
  */
-void trigger_death_roulette(struct Player* player);
+void trigger_death_roulette(Player* player);
 
 #endif
