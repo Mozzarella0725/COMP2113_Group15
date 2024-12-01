@@ -24,6 +24,8 @@ bool check_bluff(Card* played_cards, int num_cards, int called_value);
  */
 void handle_challenge(Player* challenger, Player* current_player);
 
+void display_pistol();
+
 /**
  * Executes the death roulette for a player.
  * 
