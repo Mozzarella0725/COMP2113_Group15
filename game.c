@@ -63,8 +63,9 @@ void handle_turn(Player* player, Deck* deck) {
     if (challenge == 'y' || challenge == 'Y') {
         handle_challenge(player, NULL);  // Currently, NULL is used for the previous player
     }
+    */
 }
-*/
+
 
 // CHEAT, show cards
 void show_other_players_cards(Player* players, int num_players, int current_player) {
