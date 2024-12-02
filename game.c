@@ -12,7 +12,7 @@ void start_game() {
     shuffle_deck(&deck);    // Shuffle the deck
 
     // Initialize players
-    Player player1 = {{}, 5, 0, 1, 1};  // Player 1 with 5 cards and 1 bullet
+    Player player1 = { {{0}}, 5, 0, 0, 0, 0, 1, 0, false, "Player1" };  // Player 1 with 5 cards and 1 bullet
     deal_cards(&deck, player1.hand, 5);  // Deal 5 cards to player 1
     print_deck(&deck);   // Print the deck for debugging
 
