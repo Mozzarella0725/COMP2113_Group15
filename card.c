@@ -52,7 +52,7 @@ void deal_cards(Deck* deck, Card* hand, int num_cards) {
 // Print the deck (for debugging purposes)
 void print_deck(Deck* deck) {
     for (int i = 0; i < deck->size; i++) {
-        printf("%d%c ", deck->deck[i].value);
+        printf("%d ", deck->deck[i].value);
     }
     printf("\n");
 }
