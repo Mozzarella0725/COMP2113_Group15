@@ -16,7 +16,7 @@ void option(string& command, Player previous_player) {
    	    cout << "Enter your choice (1 or 'quit'): ";
    	    cin >> command;
     }else {
-    	cout << "Options:\n1. Play cards\n2. Challenge the previous player\n3. Quit Game" << endl;
+    	cout << "Options:\n1. Play cards\n2. Challenge the previous player\nQuit Game" << endl;
     	cout << "Enter your choice (1, 2, or 'quit'): ";
     	cin >> command;
     }
