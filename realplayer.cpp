@@ -10,6 +10,18 @@ using namespace std;
 extern int challenger_id;    
 extern int current_player_id;
 
+void option(string& command, Player previous_player) {
+   if (previous_player.num_played_cards == 0) {
+	    cout << "Options:\n1. Play cards\nQuit Game" << endl;
+   	    cout << "Enter your choice (1 or 'quit'): ";
+   	    cin >> command;
+    }else {
+    	cout << "Options:\n1. Play cards\n2. Challenge the previous player\n3. Quit Game" << endl;
+    	cout << "Enter your choice (1, 2, or 'quit'): ";
+    	cin >> command;
+    }
+}
+
 void handle_player_input(Player& player, Player previous_player) {
     string command;
 
@@ -31,20 +43,7 @@ void handle_player_input(Player& player, Player previous_player) {
         }
     }
 
-    if (previous_player.num_played_cards == 0) {
-	    cout << "Options:\n1. Play cards\nQuit Game" << endl;
-   	    cout << "Enter your choice (1 or 'quit'): ";
-   	    cin >> command;
-    }else {
-    	cout << "Options:\n1. Play cards\n2. Challenge the previous player\n3. Quit Game" << endl;
-    	cout << "Enter your choice (1, 2, or 'quit'): ";
-    	cin >> command;
-    }
-
-    while (previous_player.num_played_cards == 0 && command != "1" && command != "quit" || previous_player.num_played_cards != 0 && command != "1" && command != "2" && command != "quit") {
-        cout << "Invalid choice. Please enter again: ";
-        cin >> command;
-    }
+    option(command, previous_player);
 
     if (command == "quit") {
         cout << "Are you sure you want to quit the game? (Enter 'yes' to quit): ";
@@ -54,7 +53,8 @@ void handle_player_input(Player& player, Player previous_player) {
             cout << "You have chosen to quit. Thanks for playing!" << endl;
             exit(0);
         }
-        return;
+	cout << "Failed to quit the game." << endl;
+        option(command, previous_player);
     }
 
     if (command == "2") {
