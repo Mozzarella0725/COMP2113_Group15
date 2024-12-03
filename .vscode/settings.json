@@ -2,5 +2,6 @@
     "files.associations": {
         "*.rmd": "markdown",
         "rule.h": "c"
-    }
+    },
+    "makefile.configureOnOpen": true
 }
