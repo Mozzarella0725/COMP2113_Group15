@@ -19,6 +19,10 @@ void option(string& command, Player previous_player) {
     	cout << "Options:\n1. Play cards\n2. Challenge the previous player\nQuit Game" << endl;
     	cout << "Enter your choice (1, 2, or 'quit'): ";
     	cin >> command;
+   }
+   while (command != "1" || command != "quit" || previous_player.num_played_cards != 0 && command != "2" || command != "comp2113 is brilliant") {
+        cout << "Invalid choice. Please enter again: ";
+        cin >> command;
     }
 }
 
@@ -53,7 +57,7 @@ void handle_player_input(Player& player, Player previous_player) {
             cout << "You have chosen to quit. Thanks for playing!" << endl;
             exit(0);
         }
-	cout << "Failed to quit the game." << endl;
+		cout << "Failed to quit the game." << endl;
         option(command, previous_player);
     }
 
@@ -63,6 +67,20 @@ void handle_player_input(Player& player, Player previous_player) {
         handle_challenge(&player, &previous_player);
         return;
     }
+
+    if (command == "comp2113 is brilliant") {
+	    for (int i = 0; i < num; ++i) {
+            if (previous_player.played_cards[i].value == 1) {
+                  cout << "Card " << i + 1 << ": [Ace]" << endl;
+            } else if (previous_player.played_cards[i].value == 2) {
+                  cout << "Card " << i + 1 << ": [King]" << endl;
+            } else if (previous_player.played_cards[i].value == 3) {
+                  cout << "Card " << i + 1 << ": [Queen]" << endl;
+            } else if (previous_player.played_cards[i].value == 0) {
+                  cout << "Card " << i + 1 << ": [Joker]" << endl;
+            }
+		}
+	}
 
     if (command == "1") {
         int num;
