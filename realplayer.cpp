@@ -58,15 +58,15 @@ void handle_player_input(Player& player, Player previous_player) {
             cout << "You have chosen to quit. Thanks for playing!" << endl;
             exit(0);
         }
-	cout << "Failed to quit the game." << endl;
-	command = "";
+		cout << "Failed to quit the game." << endl;
+		command = "";
         option(command, previous_player);
     }
 
     if (command == "ilovecs") {
-	cout << "-------cheat code---------" << endl;
-	cout << "The previous player played:" << endl;
-	for (int i = 0; i < previous_player.num_played_cards; ++i) {
+		cout << "-------cheat code---------" << endl;
+		cout << "The previous player played:" << endl;
+		for (int i = 0; i < previous_player.num_played_cards; ++i) {
             if (previous_player.played_cards[i].value == 1) {
     		cout << "Card " << i + 1 << ": [Ace]" << endl;
             } else if (previous_player.played_cards[i].value == 2) {
@@ -76,10 +76,10 @@ void handle_player_input(Player& player, Player previous_player) {
             } else if (previous_player.played_cards[i].value == 0) {
 		cout << "Card " << i + 1 << ": [Joker]" << endl;
             }
-	}
-	cout << "-------cheat code---------" << endl;
-	command = "";
-	option(command, previous_player);
+		}
+		cout << "-------cheat code---------" << endl;
+		command = "";
+		option(command, previous_player);
     }
 
     if (command == "2") {
@@ -104,19 +104,19 @@ void handle_player_input(Player& player, Player previous_player) {
         cout << "Enter number to select the cards to play (1 - " << player.hand_count << "):" << endl;
         vector<int> selected;
         while (selected.size() < num) {
-	    int card_index;
+	    	int card_index;
             cin >> card_index;
-	    while (card_index < 1 || card_index > player.hand_count) {
+	    	while (card_index < 1 || card_index > player.hand_count) {
                 cout << "Invalid card selection. Choose again: ";
                 cin >> card_index;
-            }
-	    card_index -= 1;
-	    if (find(selected.begin(), selected.end(), card_index) != selected.end()) {
-        	cout << "Card already selected. Choose another: " << endl;
+        	}
+	    	card_index -= 1;
+	    	if (find(selected.begin(), selected.end(), card_index) != selected.end()) {
+        		cout << "Card already selected. Choose another: " << endl;
             } else {
-        	selected.push_back(card_index);
+        		selected.push_back(card_index);
             }
-	}
+		}
 
         player.num_played_cards = num;
         for (int i = 0; i < num; ++i) {
