@@ -87,11 +87,11 @@ void handle_player_input(Player& player, Player previous_player) {
             }
 	    card_index -= 1;
 	    if (find(selected.begin(), selected.end(), card_index) != selected.end()) {
-        	cout << "Card already selected. Choose another: ";
+        	cout << "Card already selected. Choose another: " << endl;
             } else {
         	selected.push_back(card_index);
             }
-	    }
+	}
 
         player.num_played_cards = num;
         for (int i = 0; i < num; ++i) {
@@ -106,7 +106,7 @@ void handle_player_input(Player& player, Player previous_player) {
             player.hand_count--;
         }
 
-        cout << "You played " << num << " card(s): ";
+        cout << "You played " << num << " card(s): " << endl;
         for (int i = 0; i < num; ++i) {
             if (player.played_cards[i].value == 1) {
                   cout << "Card " << i + 1 << ": [Ace]" << endl;
