@@ -49,19 +49,7 @@ void handle_player_input(Player& player, Player previous_player) {
     }
 
     option(command, previous_player);
-
-    if (command == "quit") {
-        cout << "Are you sure you want to quit the game? (Enter 'yes' to quit): ";
-        string confirm;
-        cin >> confirm;
-        if (confirm == "Yes" || confirm == "yes") {
-            cout << "You have chosen to quit. Thanks for playing!" << endl;
-            exit(0);
-        }
-		cout << "Failed to quit the game." << endl;
-		command = "";
-        option(command, previous_player);
-    }
+	
 
     if (command == "ilovecs") {
 		cout << "-------cheat code---------" << endl;
@@ -80,6 +68,19 @@ void handle_player_input(Player& player, Player previous_player) {
 		cout << "-------cheat code---------" << endl;
 		command = "";
 		option(command, previous_player);
+    }
+
+        if (command == "quit") {
+        cout << "Are you sure you want to quit the game? (Enter 'yes' to quit): ";
+        string confirm;
+        cin >> confirm;
+        if (confirm == "Yes" || confirm == "yes") {
+            cout << "You have chosen to quit. Thanks for playing!" << endl;
+            exit(0);
+        }
+		cout << "Failed to quit the game." << endl;
+		command = "";
+        option(command, previous_player);
     }
 
     if (command == "2") {
