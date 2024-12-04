@@ -140,6 +140,7 @@ int main() {
 
             // Check for win/lose conditions
             if (players[0].human->is_eliminated) {
+                relay_message("\nGame Over! " );
                 game_over = true;
                 break;
             }
