@@ -100,7 +100,6 @@ private:
     // 计算基础挑战概率
     float riskFactor = calculateChallengeRisk(state);
     
-    ：
     // 1. 牌堆中的牌数较多
     float pileFactor = std::min(state.cardsInPile / 5.0f, 1.0f);
     
