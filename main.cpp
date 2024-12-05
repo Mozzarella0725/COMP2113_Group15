@@ -4,6 +4,9 @@
 #include <ctime>
 #include "game_state.h"
 #include "relay.h"
+#include "AI_Player.cpp"
+#include "rule.h"
+#include "realplayer.h"
 
 using namespace std;
 
@@ -35,8 +38,6 @@ int main() {
     players[0].is_ai = false;
     players[0].human->id = 0;
     players[0].human->death_chamber = players[0].death_chamber = 1;
-    cout << "Welcome to Liar's Bar!" << endl;
-    cout << "Can you suivive to the end?" << endl;
     relay_message("Enter your name: ");
     cin >> players[0].human->name;
     players[0].name = players[0].human->name;
@@ -99,13 +100,16 @@ int main() {
             }
 
             if (current_turn == 0) {  // Human turn
-                Player temp_player;
-                handle_player_input(*(players[0].human), temp_player);
-                if (players[0].human->num_played_cards == 0) {
+                Player* temp_player = new Player();  
+                if (last_player_with_valid_cards != -1) {
+                    temp_player->id = last_player_with_valid_cards;
+                    strcpy(temp_player->name, players[last_player_with_valid_cards].name.c_str());
+                }
+                handle_player_input(*(players[0].human), *temp_player);
+                if (playedcard.num_played_cards == 0) {
                     if (last_player_with_valid_cards != -1) {
-                        handle_challenge(players, 0, last_player_with_valid_cards);
-                        players[last_player_with_valid_cards].played_cards.clear();
                         round_over = true;
+                        continue;
                     }
                 } else {
                     players[0].played_cards.clear();
@@ -143,7 +147,6 @@ int main() {
             // Check for win/lose conditions
             if (players[0].human->is_eliminated) {
                 relay_message("\nGame Over! " );
-                cout << "Pity on you!! \n Good luck in the next time!" << endl;
                 game_over = true;
                 break;
             }
