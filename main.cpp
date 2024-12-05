@@ -35,6 +35,8 @@ int main() {
     players[0].is_ai = false;
     players[0].human->id = 0;
     players[0].human->death_chamber = players[0].death_chamber = 1;
+    cout << "Welcome to Liar's Bar!" << endl;
+    cout << "Can you suivive to the end?" << endl;
     relay_message("Enter your name: ");
     cin >> players[0].human->name;
     players[0].name = players[0].human->name;
@@ -141,6 +143,7 @@ int main() {
             // Check for win/lose conditions
             if (players[0].human->is_eliminated) {
                 relay_message("\nGame Over! " );
+                cout << "Pity on you!! \n Good luck in the next time!" << endl;
                 game_over = true;
                 break;
             }
