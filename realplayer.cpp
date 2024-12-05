@@ -7,6 +7,7 @@
 #include <vector>
 using namespace std;
 
+PlayedCard playedcard; 
 extern int challenger_id;    
 extern int current_player_id;
 
@@ -29,6 +30,7 @@ void option(string& command, Player previous_player) {
 
 void handle_player_input(Player& player, Player previous_player) {
     string command;
+    playedcard.num_played_cards =-1;
 
     if (player.hand_count == 0) {
         cout << "You have no cards in your hand. Your turn will be skipped." << endl;
@@ -87,6 +89,7 @@ void handle_player_input(Player& player, Player previous_player) {
         cout << player.name << " is challenging " << previous_player.name << "!" << endl;
         challenger_id = player.id;
         handle_challenge(&player, &previous_player);
+	playedcard.num_played_cards = 0; 
         return;
     }
 
