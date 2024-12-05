@@ -8,4 +8,8 @@
 
 void handle_player_input(Player& player, Player previous_player);
 
+struct PlayedCard {
+    int num_played_cards;
+};
+extern PlayedCard playedcard; 
 #endif
