@@ -27,6 +27,4 @@ struct GamePlayer {
 
 void start_new_round(std::vector<GamePlayer>& players);
 void print_game_state(std::vector<GamePlayer>& players);
-void handle_challenge(std::vector<GamePlayer>& players, int challenger, int challenged);
-
 #endif 
