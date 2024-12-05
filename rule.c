@@ -41,11 +41,11 @@ void handle_challenge(Player* challenger, Player* current_player) {
 
     if (is_bluff) {
         // Player was bluffing
-        printf("Challenge successful! Player %d was bluffing.\n", current_player->id);
+        printf("Challenge successful! Player %s was bluffing.\n", current_player->name);
         trigger_death_roulette(current_player);
     } else {
         // Player was truthful
-        printf("Challenge failed! Player %d was truthful.\n", current_player->id);
+        printf("Challenge failed! Player %s was truthful.\n", current_player->name);
         trigger_death_roulette(challenger);
     }
 }
