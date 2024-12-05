@@ -66,8 +66,7 @@ int main() {
             int player_with_cards;
             if (check_all_players_but_one_empty(players, player_with_cards)) {
                 if (last_player_with_valid_cards != -1 && !players[last_player_with_valid_cards].played_cards.empty()) {
-                    // Last player with cards didn't challenge, they face death roulette
-                    Player last_player;
+                    Player last_player = Player();  
                     last_player.id = player_with_cards;
                     last_player.death_chamber = players[player_with_cards].death_chamber;
                     last_player.is_eliminated = false;
@@ -78,15 +77,16 @@ int main() {
                     
                     trigger_death_roulette(&last_player);
                     
+                    players[player_with_cards].death_chamber = last_player.death_chamber;
                     if (last_player.is_eliminated) {
                         if (players[player_with_cards].is_ai) {
                             players[player_with_cards].ai->setEliminated(true);
+                            players.erase(players.begin() + player_with_cards);
                         } else {
                             players[player_with_cards].human->is_eliminated = true;
                             game_over = true;
                         }
                     }
-                    players[player_with_cards].death_chamber = last_player.death_chamber;
                 }
                 round_over = true;
                 continue;
@@ -95,7 +95,7 @@ int main() {
             // Skip if current player has no cards
             if ((players[current_turn].is_ai && players[current_turn].ai->getHandSize() == 0) ||
                 (!players[current_turn].is_ai && players[current_turn].human->hand_count == 0)) {
-                current_turn = (current_turn + 1) % 4;
+                current_turn = (current_turn + 1) % players.size();
                 continue;
             }
 
@@ -106,7 +106,14 @@ int main() {
                     strcpy(temp_player->name, players[last_player_with_valid_cards].name.c_str());
                 }
                 handle_player_input(*(players[0].human), *temp_player);
-                if (playedcard.num_played_cards == 0) {
+                if (temp_player->is_eliminated) {
+                    players[0].human->is_eliminated = true;
+                    players.erase(players.begin());
+                    game_over = true;
+                }
+                delete temp_player;
+                
+                if (!playedcard.num_played_cards) {
                     if (last_player_with_valid_cards != -1) {
                         round_over = true;
                         continue;
@@ -120,12 +127,26 @@ int main() {
             } else if (!players[current_turn].ai->isEliminated()) {  // AI turn
                 relay_message(("AI " + to_string(current_turn) + "'s turn\n").c_str());
                 Play ai_play = players[current_turn].ai->makePlay({called_value, 0, 4, 4});
-                
+    
                 if (ai_play.getType() == Play::PlayType::Challenge) {
                     if (last_player_with_valid_cards != -1 && !players[last_player_with_valid_cards].played_cards.empty()) {
                         relay_message(("AI " + to_string(current_turn) + " challenges " + 
                             players[last_player_with_valid_cards].name + "!\n").c_str());
-                        handle_challenge(players, current_turn, last_player_with_valid_cards);
+            
+                        Player* temp_ai = new Player();
+                        temp_ai->id = current_turn;
+                        strcpy(temp_ai->name, players[current_turn].name.c_str());
+                        Player* last_player = new Player();
+                        last_player->id = last_player_with_valid_cards;
+                        strcpy(last_player->name, players[last_player_with_valid_cards].name.c_str());
+ 
+                        handle_challenge(temp_ai, last_player);
+                        if (temp_ai->is_eliminated) {
+                            players[current_turn].ai->setEliminated(true);
+                            players.erase(players.begin() + current_turn);
+                        }
+                        delete temp_ai;
+                        delete last_player;
                         players[last_player_with_valid_cards].played_cards.clear();
                         round_over = true;
                     }
@@ -141,25 +162,16 @@ int main() {
             }
 
             if (!round_over) {
-                current_turn = (current_turn + 1) % 4;
+                current_turn = (current_turn + 1) % players.size();
             }
 
             // Check for win/lose conditions
-            if (players[0].human->is_eliminated) {
-                relay_message("\nGame Over! " );
+            if (players.size() == 1 && !players[0].is_ai) {
+                relay_message(("\nCongratulations! " + players[0].name + " wins!\n").c_str());
                 game_over = true;
                 break;
-            }
-
-            bool all_ais_eliminated = true;
-            for (int i = 1; i < 4; i++) {
-                if (!players[i].ai->isEliminated()) {
-                    all_ais_eliminated = false;
-                    break;
-                }
-            }
-            if (all_ais_eliminated) {
-                relay_message(("\nCongratulations! " + players[0].name + " wins!\n").c_str());
+            } else if (players.size() == 1) {
+                relay_message("\nGame Over! ");
                 game_over = true;
                 break;
             }
