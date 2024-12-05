@@ -71,26 +71,7 @@ void print_game_state(std::vector<GamePlayer>& players) {
     }
     relay_message("================\n\n");
 }
-
-void handle_challenge(std::vector<GamePlayer>& players, int challenger, int challenged) {
-    Player challenger_player, challenged_player;
-    
-    // Initialize challenger
-    challenger_player.id = challenger;
-    challenger_player.death_chamber = players[challenger].death_chamber;
-    challenger_player.is_eliminated = false;
-    challenger_player.num_played_cards = 0;
-    strncpy(challenger_player.name, players[challenger].name.c_str(), 49);
-    challenger_player.name[49] = '\0';
-    
-    // Initialize challenged
-    challenged_player.id = challenged;
-    challenged_player.death_chamber = players[challenged].death_chamber;
-    challenged_player.is_eliminated = false;
-    challenged_player.num_played_cards = players[challenged].played_cards.size();
-    strncpy(challenged_player.name, players[challenged].name.c_str(), 49);
-    challenged_player.name[49] = '\0';
-    
+  
     // Copy played cards from challenged player
     for (size_t i = 0; i < players[challenged].played_cards.size() && i < MAX_CARDS; i++) {
         challenged_player.played_cards[i] = players[challenged].played_cards[i];
