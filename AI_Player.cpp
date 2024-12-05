@@ -90,16 +90,34 @@ private:
         return 1.0f - (float)matchingCards / hand.size();
     }
 
-    bool shouldChallenge(const GameState& state) {
-        // Random challenge with higher probability if:
-        // 1. Few cards match the current liar's card in our hand
-        // 2. Late in the game
-        // 3. Many cards have been played
-        float challengeThreshold = 0.7f;
-        float random = (float)rand() / RAND_MAX;
-        
-        return random > challengeThreshold && calculateChallengeRisk(state) > 0.8f;
-    }
+   bool shouldChallenge(const GameState& state) {
+    // 降低 challengeThreshold 
+    float challengeThreshold = 0.3f; // 从0.7改为0.3
+    
+    // 根据游戏状态调整挑战概率
+    float challengeProbability = 0.0f;
+    
+    // 计算基础挑战概率
+    float riskFactor = calculateChallengeRisk(state);
+    
+    ：
+    // 1. 牌堆中的牌数较多
+    float pileFactor = std::min(state.cardsInPile / 5.0f, 1.0f);
+    
+    // 2. 游戏接近尾声（剩余玩家较少）
+    float playersFactor = 1.0f - (float)state.remainingPlayers / state.totalPlayers;
+    
+    // 3. 手牌中匹配当前声明的牌较少
+    challengeProbability = riskFactor * 0.4f + // 风险因素权重
+                          pileFactor * 0.3f +   // 牌堆因素权重
+                          playersFactor * 0.3f; // 玩家因素权重
+    
+    float random = (float)rand() / RAND_MAX;
+    
+    // 当计算出的挑战概率高于阈值时更容易发起挑战
+    return random < challengeProbability || 
+           (random > challengeThreshold && riskFactor > 0.6f); //从0.8改为0.6
+}
 
     std::vector<Card> selectCardsToPlay(const GameState& state) {
         std::vector<Card> cardsToPlay;
