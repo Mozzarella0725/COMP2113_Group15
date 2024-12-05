@@ -3,14 +3,11 @@ CFLAGS = -Wall
 
 all: game
 
-game: main.o AI_Player.o realplayer.o game.o card.o rule.o relay.o game_state.o
-	g++ $(FLAGS) main.o AI_Player.o realplayer.o game.o card.o rule.o relay.o game_state.o -o game
+game: main.o realplayer.o game.o card.o rule.o relay.o game_state.o
+	g++ $(FLAGS) main.o realplayer.o game.o card.o rule.o relay.o game_state.o -o game
 
-main.o: main.cpp game_state.h card.h realplayer.h rule.h
+main.o: main.cpp game_state.h card.h rule.h realplayer.h relay.h
 	g++ $(FLAGS) -c main.cpp
-
-AI_Player.o: AI_Player.cpp card.h
-	g++ $(FLAGS) -c "AI_Player.cpp" -o AI_Player.o
 
 realplayer.o: realplayer.cpp realplayer.h game.h rule.h card.h
 	g++ $(FLAGS) -c realplayer.cpp
@@ -27,7 +24,7 @@ rule.o: rule.c rule.h
 relay.o: relay.c relay.h
 	gcc $(CFLAGS) -c relay.c
 
-game_state.o: game_state.cpp game_state.h
+game_state.o: game_state.cpp game_state.h card.h rule.h relay.h realplayer.h
 	g++ $(FLAGS) -c game_state.cpp
 
 clean:
