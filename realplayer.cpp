@@ -5,14 +5,13 @@
 #include <iostream>
 #include <string>
 #include <algorithm>
-#include <vector>  // Added vector header
+#include <vector>
 using namespace std;
 
 PlayedCard playedcard; 
 extern int challenger_id;    
 extern int current_player_id;
 
-// Added new option function
 void option(string& command, Player& previous_player) {
     if (previous_player.num_played_cards == 0) {
         cout << "Options:\n1. Play cards\nQuit Game" << endl;
@@ -30,8 +29,8 @@ void option(string& command, Player& previous_player) {
     }
 }
 
-// Modified handle_player_input function
-void handle_player_input(Player& player, Player& previous_player) {  // Changed Player& to Player for previous_player
+
+void handle_player_input(Player& player, Player& previous_player) {
     string command;
     playedcard.num_played_cards = -1;
 
@@ -55,7 +54,6 @@ void handle_player_input(Player& player, Player& previous_player) {  // Changed 
 
     option(command, previous_player);
 
-    // Added cheat code section
     if (command == "ilovecs") {
         cout << "-------cheat code---------" << endl;
         cout << "The previous player played:" << endl;
@@ -75,7 +73,6 @@ void handle_player_input(Player& player, Player& previous_player) {  // Changed 
         option(command, previous_player);
     }
 
-    // Modified quit section
     if (command == "quit") {
         cout << "Are you sure you want to quit the game? (Enter 'yes' to quit): ";
         string confirm;
@@ -110,7 +107,7 @@ void handle_player_input(Player& player, Player& previous_player) {  // Changed 
         }
 
         cout << "Enter number to select the cards to play (1 - " << player.hand_count << "):" << endl;
-        vector<int> selected;  // Changed to vector
+        vector<int> selected;  
         while (selected.size() < num) {
             int card_index;
             cin >> card_index;
