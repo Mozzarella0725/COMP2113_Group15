@@ -171,7 +171,7 @@ int main() {
                             if (last_player_with_valid_cards > current_turn) {
                                 last_player_with_valid_cards--;
                             }
-                            if (last_player->is_eliminated) {  
+                        if (last_player->is_eliminated) {  
                                 delete players[last_player_with_valid_cards].ai;  
                                 players.erase(players.begin() + last_player_with_valid_cards);  
                                 if (current_turn > last_player_with_valid_cards) {
@@ -180,8 +180,6 @@ int main() {
                             }
                         if (last_player->is_eliminated && !players[last_player_with_valid_cards].is_ai) {
 
-                            delete players[last_player_with_valid_cards].human;
-                            players.erase(players.begin() + last_player_with_valid_cards);
                             relay_message("\nGame Over! You have been eliminated!\n");
                             round_over = true;
 }
