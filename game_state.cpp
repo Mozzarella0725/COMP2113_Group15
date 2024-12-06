@@ -15,9 +15,8 @@ void start_new_round(std::vector<GamePlayer>& players) {
     relay_message("\nStarting new round!\n");
     
     // Deal cards to players
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < players.size(); i++) {
         if (players[i].is_ai) {
-            if (!players[i].ai->isEliminated()) {
                 players[i].ai = new AIPlayer(i);
                 Card temp_hand[5];
                 deal_cards(&deck, temp_hand, 5);
@@ -25,7 +24,6 @@ void start_new_round(std::vector<GamePlayer>& players) {
                     temp_hand[j].is_joker = (temp_hand[j].value == 0);
                     players[i].ai->addCard(temp_hand[j]);
                 }
-            }
         } else {
             if (!players[i].human->is_eliminated) {
                 players[i].human->hand_count = 0;
