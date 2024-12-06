@@ -55,18 +55,15 @@ void print_game_state(std::vector<GamePlayer>& players) {
     
     relay_message(("Current card to play: " + card_name + "\n").c_str());
 
-    for (int i = 0; i < 4; i++) {
-        bool is_eliminated;
+    for (int i = 0; i < players.size(); i++) {
         int card_count;
-        
         if (players[i].is_ai) {
-            is_eliminated = players[i].ai->isEliminated();
             card_count = players[i].ai->getHandSize();
         } else {
-            is_eliminated = players[i].human->is_eliminated;
             card_count = players[i].human->hand_count;
         }
-        
+        bool is_eliminated;
+
         if (!is_eliminated) {
             relay_message((players[i].name + " has " + 
                 std::to_string(card_count) + " cards\n").c_str());
@@ -87,12 +84,11 @@ void handle_challenge(std::vector<GamePlayer>& players, int challenger, int chal
     challenger_player.name[49] = '\0';
     
     
-    // Copy played cards from challenged player
-    for (size_t i = 0; i < players[challenged].played_cards.size() && i < MAX_CARDS; i++) {
+    challenged_player.num_played_cards = players[challenged].played_cards.size();
+    for (size_t i = 0; i < players[challenged].played_cards.size(); i++) {
         challenged_player.played_cards[i] = players[challenged].played_cards[i];
     }
 
-    // Handle the challenge
     handle_challenge(&challenger_player, &challenged_player);
 
     // Update death chambers
