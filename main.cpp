@@ -88,6 +88,8 @@ int main() {
                         } else {
                             players.erase(players.begin() + player_with_cards);
                             game_over = true;
+                            relay_message("\nGame Over! ");
+                            
                         }
                     }
                 }
@@ -118,8 +120,10 @@ int main() {
                 handle_player_input(*(players[0].human), *temp_player);
                 
                 if (temp_player->is_eliminated) {
+                    delete players[0].human;
                     players.erase(players.begin());
                     game_over = true;
+                    continue;
                 } else if (playedcard.num_played_cards == 0) {
                     if (last_player_with_valid_cards != -1) {
                         round_over = true;
@@ -167,12 +171,28 @@ int main() {
                             if (last_player_with_valid_cards > current_turn) {
                                 last_player_with_valid_cards--;
                             }
+                            if (last_player->is_eliminated) {  
+                                delete players[last_player_with_valid_cards].ai;  
+                                players.erase(players.begin() + last_player_with_valid_cards);  
+                                if (current_turn > last_player_with_valid_cards) {
+                                    current_turn--;
+                                }
+                            }
+                        if (last_player->is_eliminated && !players[last_player_with_valid_cards].is_ai) {
+
+                            delete players[last_player_with_valid_cards].human;
+                            players.erase(players.begin() + last_player_with_valid_cards);
+                            relay_message("\nGame Over! You have been eliminated!\n");
+                            round_over = true;
+}
+
                         }
 
                         delete temp_ai;
                         delete last_player;
                         players[last_player_with_valid_cards].played_cards.clear();
                         round_over = true;
+                        continue;
                     }
                 } else {
                     vector<Card> played_cards = ai_play.getCards();
@@ -193,8 +213,6 @@ int main() {
             if (players.size() == 1) {
                 if (!players[0].is_ai) {
                     relay_message(("\nCongratulations! " + players[0].name + " wins!\n").c_str());
-                } else {
-                    relay_message(("\nGame Over! " + players[0].name + " wins!\n").c_str());
                 }
                 game_over = true;
                 break;
