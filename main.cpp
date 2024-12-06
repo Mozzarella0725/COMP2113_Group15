@@ -80,6 +80,7 @@ int main() {
                     players[player_with_cards].death_chamber = last_player.death_chamber;
                     if (last_player.is_eliminated) {
                         if (players[player_with_cards].is_ai) {
+                            delete players[player_with_cards].ai;
                             players.erase(players.begin() + player_with_cards);
                             if (current_turn > player_with_cards) {
                                 current_turn--;
@@ -142,21 +143,31 @@ int main() {
                     if (last_player_with_valid_cards != -1 && !players[last_player_with_valid_cards].played_cards.empty()) {
                         relay_message(("AI " + to_string(current_turn) + " challenges " + 
                             players[last_player_with_valid_cards].name + "!\n").c_str());
-            
+
                         Player* temp_ai = new Player();
                         temp_ai->id = current_turn;
+                        temp_ai->death_chamber = players[current_turn].death_chamber;
                         strcpy(temp_ai->name, players[current_turn].name.c_str());
+
                         Player* last_player = new Player();
                         last_player->id = last_player_with_valid_cards;
+                        last_player->death_chamber = players[last_player_with_valid_cards].death_chamber;
                         strcpy(last_player->name, players[last_player_with_valid_cards].name.c_str());
- 
+
+                        last_player->num_played_cards = players[last_player_with_valid_cards].human->num_played_cards;
+                        memcpy(last_player->played_cards, players[last_player_with_valid_cards].human->played_cards, 
+                            sizeof(Card) * last_player->num_played_cards);
+
                         handle_challenge(temp_ai, last_player);
+                        
                         if (temp_ai->is_eliminated) {
+                            delete players[current_turn].ai;  
                             players.erase(players.begin() + current_turn);
                             if (last_player_with_valid_cards > current_turn) {
                                 last_player_with_valid_cards--;
                             }
                         }
+
                         delete temp_ai;
                         delete last_player;
                         players[last_player_with_valid_cards].played_cards.clear();
