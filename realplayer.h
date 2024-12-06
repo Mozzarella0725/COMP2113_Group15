@@ -6,7 +6,7 @@
 #include "card.h"
 #include <string>
 
-void handle_player_input(Player& player, Player previous_player);
+void handle_player_input(Player& player, Player& previous_player);
 
 struct PlayedCard {
     int num_played_cards;
