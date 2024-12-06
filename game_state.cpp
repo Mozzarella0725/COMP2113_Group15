@@ -104,3 +104,4 @@ void handle_challenge(std::vector<GamePlayer>& players, int challenger, int chal
             players[challenger].human->is_eliminated = true;
         }
     }
+}
