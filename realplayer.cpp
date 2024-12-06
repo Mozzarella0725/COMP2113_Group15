@@ -5,22 +5,23 @@
 #include <iostream>
 #include <string>
 #include <algorithm>
-#include <vector>
+#include <vector>  // Added vector header
 using namespace std;
 
 PlayedCard playedcard; 
 extern int challenger_id;    
 extern int current_player_id;
 
-void option(string& command, Player previous_player) {
-   if (previous_player.num_played_cards == 0) {
-	    cout << "Options:\n1. Play cards\nQuit Game" << endl;
-   	    cout << "Enter your choice (1 or 'quit'): ";
-   	    cin >> command;
-    }else {
-    	cout << "Options:\n1. Play cards\n2. Challenge the previous player\nQuit Game" << endl;
-    	cout << "Enter your choice (1, 2, or 'quit'): ";
-    	cin >> command;
+// Added new option function
+void option(string& command, Player& previous_player) {
+    if (previous_player.num_played_cards == 0) {
+        cout << "Options:\n1. Play cards\nQuit Game" << endl;
+        cout << "Enter your choice (1 or 'quit'): ";
+        cin >> command;
+    } else {
+        cout << "Options:\n1. Play cards\n2. Challenge the previous player\nQuit Game" << endl;
+        cout << "Enter your choice (1, 2, or 'quit'): ";
+        cin >> command;
     }
 
     while (!(command == "1" || command == "quit" || command == "ilovecs" || (command == "2" && previous_player.num_played_cards != 0))) {
@@ -29,9 +30,10 @@ void option(string& command, Player previous_player) {
     }
 }
 
-void handle_player_input(Player& player, Player previous_player) {
+// Modified handle_player_input function
+void handle_player_input(Player& player, Player& previous_player) {  // Changed Player& to Player for previous_player
     string command;
-    playedcard.num_played_cards =-1;
+    playedcard.num_played_cards = -1;
 
     if (player.hand_count == 0) {
         cout << "You have no cards in your hand. Your turn will be skipped." << endl;
@@ -52,28 +54,29 @@ void handle_player_input(Player& player, Player previous_player) {
     }
 
     option(command, previous_player);
-	
 
+    // Added cheat code section
     if (command == "ilovecs") {
-		cout << "-------cheat code---------" << endl;
-		cout << "The previous player played:" << endl;
-		for (int i = 0; i < previous_player.num_played_cards; ++i) {
+        cout << "-------cheat code---------" << endl;
+        cout << "The previous player played:" << endl;
+        for (int i = 0; i < previous_player.num_played_cards; ++i) {
             if (previous_player.played_cards[i].value == 1) {
-    		cout << "Card " << i + 1 << ": [Ace]" << endl;
+                cout << "Card " << i + 1 << ": [Ace]" << endl;
             } else if (previous_player.played_cards[i].value == 2) {
-    		cout << "Card " << i + 1 << ": [King]" << endl;
+                cout << "Card " << i + 1 << ": [King]" << endl;
             } else if (previous_player.played_cards[i].value == 3) {
- 		cout << "Card " << i + 1 << ": [Queen]" << endl;
+                cout << "Card " << i + 1 << ": [Queen]" << endl;
             } else if (previous_player.played_cards[i].value == 0) {
-		cout << "Card " << i + 1 << ": [Joker]" << endl;
+                cout << "Card " << i + 1 << ": [Joker]" << endl;
             }
-		}
-		cout << "-------cheat code---------" << endl;
-		command = "";
-		option(command, previous_player);
+        }
+        cout << "-------cheat code---------" << endl;
+        command = "";
+        option(command, previous_player);
     }
 
-        if (command == "quit") {
+    // Modified quit section
+    if (command == "quit") {
         cout << "Are you sure you want to quit the game? (Enter 'yes' to quit): ";
         string confirm;
         cin >> confirm;
@@ -81,8 +84,8 @@ void handle_player_input(Player& player, Player previous_player) {
             cout << "You have chosen to quit. Thanks for playing!" << endl;
             exit(0);
         }
-		cout << "Failed to quit the game." << endl;
-		command = "";
+        cout << "Failed to quit the game." << endl;
+        command = "";
         option(command, previous_player);
     }
 
@@ -90,7 +93,7 @@ void handle_player_input(Player& player, Player previous_player) {
         cout << player.name << " is challenging " << previous_player.name << "!" << endl;
         challenger_id = player.id;
         handle_challenge(&player, &previous_player);
-	playedcard.num_played_cards = 0; 
+        playedcard.num_played_cards = 0;
         return;
     }
 
@@ -107,21 +110,21 @@ void handle_player_input(Player& player, Player previous_player) {
         }
 
         cout << "Enter number to select the cards to play (1 - " << player.hand_count << "):" << endl;
-        vector<int> selected;
+        vector<int> selected;  // Changed to vector
         while (selected.size() < num) {
-	    	int card_index;
+            int card_index;
             cin >> card_index;
-	    	while (card_index < 1 || card_index > player.hand_count) {
+            while (card_index < 1 || card_index > player.hand_count) {
                 cout << "Invalid card selection. Choose again: ";
                 cin >> card_index;
-        	}
-	    	card_index -= 1;
-	    	if (find(selected.begin(), selected.end(), card_index) != selected.end()) {
-        		cout << "Card already selected. Choose another: " << endl;
-            } else {
-        		selected.push_back(card_index);
             }
-		}
+            card_index -= 1;
+            if (find(selected.begin(), selected.end(), card_index) != selected.end()) {
+                cout << "Card already selected. Choose another: " << endl;
+            } else {
+                selected.push_back(card_index);
+            }
+        }
 
         player.num_played_cards = num;
         for (int i = 0; i < num; ++i) {
