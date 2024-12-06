@@ -135,13 +135,14 @@ int main() {
                 if (round_over) continue;
                 
             } else {  // AI turn
-                relay_message(("AI " + to_string(current_turn) + "'s turn\n").c_str());
+                string ai_name = players[current_turn].name;
+                relay_message((ai_name + "'s turn\n").c_str());
                 Play ai_play = players[current_turn].ai->makePlay({called_value, 0, 
                     static_cast<int>(players.size()), current_turn});
     
                 if (ai_play.getType() == Play::PlayType::Challenge) {
                     if (last_player_with_valid_cards != -1 && !players[last_player_with_valid_cards].played_cards.empty()) {
-                        relay_message(("AI " + to_string(current_turn) + " challenges " + 
+                        relay_message((ai_name + " challenges " + 
                             players[last_player_with_valid_cards].name + "!\n").c_str());
 
                         Player* temp_ai = new Player();
@@ -175,7 +176,7 @@ int main() {
                     }
                 } else {
                     vector<Card> played_cards = ai_play.getCards();
-                    relay_message(("AI " + to_string(current_turn) + " plays " + 
+                    relay_message((ai_name + " plays " + 
                         to_string(played_cards.size()) + " card(s)\n").c_str());
                     players[current_turn].played_cards.clear();
                     players[current_turn].played_cards = played_cards;
