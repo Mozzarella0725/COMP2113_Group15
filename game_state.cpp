@@ -1,5 +1,8 @@
 #include "game_state.h"
 #include "relay.h"
+#include "card.h"
+#include "rule.h"
+#include "AI_Player.cpp"
 #include <cstring>
 
 extern int called_value;
@@ -71,7 +74,19 @@ void print_game_state(std::vector<GamePlayer>& players) {
     }
     relay_message("================\n\n");
 }
-  
+
+void handle_challenge(std::vector<GamePlayer>& players, int challenger, int challenged) {
+    Player challenger_player, challenged_player;
+    
+    // Initialize challenger
+    challenger_player.id = challenger;
+    challenger_player.death_chamber = players[challenger].death_chamber;
+    challenger_player.is_eliminated = false;
+    challenger_player.num_played_cards = 0;
+    strncpy(challenger_player.name, players[challenger].name.c_str(), 49);
+    challenger_player.name[49] = '\0';
+    
+    
     // Copy played cards from challenged player
     for (size_t i = 0; i < players[challenged].played_cards.size() && i < MAX_CARDS; i++) {
         challenged_player.played_cards[i] = players[challenged].played_cards[i];
@@ -80,28 +95,12 @@ void print_game_state(std::vector<GamePlayer>& players) {
     // Handle the challenge
     handle_challenge(&challenger_player, &challenged_player);
 
-    // Update player states after challenge
-    players[challenger].death_chamber = challenger_player.death_chamber;
-    players[challenged].death_chamber = challenged_player.death_chamber;
-
-    // Update elimination status
+    // Update death chambers
     if (challenger_player.is_eliminated) {
+        players[challenger].death_chamber = challenger_player.death_chamber;
         if (players[challenger].is_ai) {
             players[challenger].ai->setEliminated(true);
-            relay_message(("AI " + std::to_string(challenger) + " has been eliminated!\n").c_str());
         } else {
             players[challenger].human->is_eliminated = true;
-            relay_message("\nYou have been eliminated!\n");
         }
     }
-    
-    if (challenged_player.is_eliminated) {
-        if (players[challenged].is_ai) {
-            players[challenged].ai->setEliminated(true);
-            relay_message(("AI " + std::to_string(challenged) + " has been eliminated!\n").c_str());
-        } else {
-            players[challenged].human->is_eliminated = true;
-            relay_message("\nYou have been eliminated!\n");
-        }
-    }
-}
