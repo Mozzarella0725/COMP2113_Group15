@@ -100,11 +100,20 @@ int main() {
             }
 
             if (current_turn == 0) {  // Human turn
+
                 Player* temp_player = new Player();  
                 if (last_player_with_valid_cards != -1) {
                     temp_player->id = last_player_with_valid_cards;
                     strcpy(temp_player->name, players[last_player_with_valid_cards].name.c_str());
+                
+                temp_player->num_played_cards = players[last_player_with_valid_cards].played_cards.size();
+                for (size_t i = 0; i < players[last_player_with_valid_cards].played_cards.size(); i++) {
+                    temp_player->played_cards[i] = players[last_player_with_valid_cards].played_cards[i];
+                    }
+                } else {
+                    temp_player->num_played_cards = 0;
                 }
+    
                 handle_player_input(*(players[0].human), *temp_player);
                 if (temp_player->is_eliminated) {
                     players[0].human->is_eliminated = true;
