@@ -103,6 +103,14 @@ Follow these steps to get started with Liar's Deck:
    ```bash
    make clean
    ```
+   
+6. If you cannot beat the Robot, type
+
+   ```bash
+   ilovecs
+   ```
+
+   to have a peek!
 
 ---
 
