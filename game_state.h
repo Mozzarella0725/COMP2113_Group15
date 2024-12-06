@@ -7,10 +7,12 @@
 #include "game.h"
 #include "rule.h"
 #include "realplayer.h"
-#include "AI_Player.cpp"
 
 #define MAX_PLAYERS 4
 #define MAX_CARDS 5
+
+// Forward declare AIPlayer
+class AIPlayer;
 
 // Structure to hold player information
 struct GamePlayer {
@@ -27,4 +29,6 @@ struct GamePlayer {
 
 void start_new_round(std::vector<GamePlayer>& players);
 void print_game_state(std::vector<GamePlayer>& players);
+void handle_challenge(std::vector<GamePlayer>& players, int challenger, int challenged);
+
 #endif 
